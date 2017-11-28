@@ -38,7 +38,7 @@ public class Portal : MonoBehaviour {
 
 		renderCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 		Material mat = new Material(Shader.Find("Hidden/PortalEffectShader"));
-		GetComponent<MeshRenderer> ().material = mat;
+		GetComponent<Renderer> ().material = mat;
 		mat.mainTexture = renderCamera.targetTexture;
 	}
 	
