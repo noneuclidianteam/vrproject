@@ -421,8 +421,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.06632155, y: 0.062571526, z: 0.2121234}
-  m_Center: {x: 0, y: 0, z: 0.16874456}
+  m_Size: {x: 0.06632155, y: 0.062571526, z: 0.051956892}
+  m_Center: {x: 0, y: 0, z: 0.08866131}
 --- !u!20 &1206452473
 Camera:
   m_ObjectHideFlags: 0

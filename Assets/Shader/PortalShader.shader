@@ -24,6 +24,14 @@ Shader "Hidden/PortalEffectShader"
 			
 			#include "UnityCG.cginc"
 
+			float offsetX(float input) {
+				return input + cos(input * 200.0f + _Time.w * 2.0f) / 300.0f;
+			}
+
+			float offsetY(float input) {
+				return input + sin(input * 200.0f + _Time.w * 2.0f) / 300.0f;
+			}
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -50,6 +58,9 @@ Shader "Hidden/PortalEffectShader"
 			fixed4 frag (v2f i) : SV_Target
 			{
 				i.screenPos /= i.screenPos.w;
+				//fixed4 col = tex2D(_MainTex, float2(offsetX(i.screenPos.x), offsetY(i.screenPos.y)));
+				//col += reflectX(i.screenPos.x) + reflectY(i.screenPos.y);
+
 				fixed4 col = tex2D(_MainTex, float2(i.screenPos.x, i.screenPos.y));
 				
 				return col;
