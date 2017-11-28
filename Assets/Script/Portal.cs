@@ -9,7 +9,7 @@ public class Portal : MonoBehaviour {
 
 	private bool crossed = false;
 	private Camera renderCamera;
-	private MeshRenderer renderer;
+	private Vector3 lastCamPos;
 
 	private void enableLayer(Camera cam, int layer) {
 		cam.cullingMask = cam.cullingMask | 1 << layer;
@@ -38,14 +38,13 @@ public class Portal : MonoBehaviour {
 
 		renderCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 		Material mat = new Material(Shader.Find("Hidden/PortalEffectShader"));
-		renderer = GetComponent<MeshRenderer> ();
-		renderer.material = mat;
+		GetComponent<MeshRenderer> ().material = mat;
 		mat.mainTexture = renderCamera.targetTexture;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		lastCamPos = MainCamera.transform.position;
 	}
 
 	void OnTriggerEnter(Collider collider) {
@@ -54,9 +53,12 @@ public class Portal : MonoBehaviour {
 			return;
 		}
 
-		Vector3 camToPortal = this.transform.position - MainCamera.transform.position;
+		Vector3 currCamPos = MainCamera.transform.position;
 
 		if (crossed) {
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
+				return;
+			}
 			disableLayer (MainCamera, DestinationLayer);
 			enableLayer (MainCamera, SourceLayer);
 
@@ -65,6 +67,10 @@ public class Portal : MonoBehaviour {
 
 			this.gameObject.layer = SourceLayer;
 		} else {
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
+				return;
+			}
+
 			disableLayer (MainCamera, SourceLayer);
 			enableLayer (MainCamera, DestinationLayer);
 
