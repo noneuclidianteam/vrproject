@@ -5,6 +5,8 @@
 /[Bb]uilds/
 /UnityPackageManager
 /Assets/AssetStoreTools*
+/Assets/SteamVR*
+/Assets/ICAN_corridor*
 
 # Visual Studio 2015 cache directory
 /.vs/

@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class Portal : MonoBehaviour {
 
 	public Camera MainCamera;
+
 	public int SourceLayer, DestinationLayer;
 
 	private bool crossed = false;
@@ -21,6 +23,7 @@ public class Portal : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		renderCamera = (Camera) Camera.Instantiate(
 			MainCamera.GetComponent<Camera>(),
 			MainCamera.transform.position,
@@ -36,7 +39,7 @@ public class Portal : MonoBehaviour {
 		enableLayer (MainCamera, SourceLayer);
 		disableLayer (MainCamera, DestinationLayer);
 
-		renderCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+		renderCamera.targetTexture = new RenderTexture(MainCamera.pixelWidth, MainCamera.pixelHeight, 24);
 		Material mat = new Material(Shader.Find("Hidden/PortalEffectShader"));
 		GetComponent<Renderer> ().material = mat;
 		mat.mainTexture = renderCamera.targetTexture;

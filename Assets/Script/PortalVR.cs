@@ -30,7 +30,26 @@ public class PortalVR : MonoBehaviour {
 		layer2 = tmp;
 	}
 
+	private void changePortalsLayer()
+	{
+		print("Portal layers : " + portalLeftOnly);
+		
+		if (portalLeftOnly.layer == LeftOnlyDestinationLayer)
+		{
+				portalLeftOnly.layer = LeftOnlySourceLayer;
+				portalRightOnly.layer = RightOnlySourceLayer;
+		}
+			else
+		{
+				portalLeftOnly.layer = LeftOnlyDestinationLayer;
+				portalRightOnly.layer = RightOnlyDestinationLayer;
+		}
+	}
+
 	private void invertLayers() {
+
+		print("inverting swapLayers");
+
 		swapLayers(ref SourceLayer, ref DestinationLayer);
 		swapLayers(ref RightOnlySourceLayer, ref RightOnlyDestinationLayer);
 		swapLayers(ref LeftOnlySourceLayer, ref LeftOnlyDestinationLayer);
@@ -44,6 +63,8 @@ public class PortalVR : MonoBehaviour {
 		disableLayer(RightCamera, DestinationLayer);
 		enableLayer(RightCamera, RightOnlySourceLayer);
 		disableLayer(RightCamera, RightOnlyDestinationLayer);
+
+		changePortalsLayer();
 	}
 
 	Camera createRenderCameraFrom(Camera cam) {
@@ -85,12 +106,12 @@ public class PortalVR : MonoBehaviour {
 		Material matRight = new Material(Shader.Find("Hidden/PortalEffectShader"));
 		GetComponent<Renderer> ().material = matRight;
 		matRight.mainTexture = renderCameraRight.targetTexture;
-		portalLeftOnly.layer = RightOnlySourceLayer;
+		portalLeftOnly.layer = LeftOnlySourceLayer;
 
 		Material matLeft = new Material(Shader.Find("Hidden/PortalEffectShader"));
 		portalLeftOnly.GetComponent<Renderer>().material = matLeft;
 		matLeft.mainTexture = renderCameraLeft.targetTexture;
-		portalLeftOnly.layer = RightOnlySourceLayer;
+		portalLeftOnly.layer = LeftOnlySourceLayer;
 	}
 
 	// Update is called once per frame
@@ -98,25 +119,26 @@ public class PortalVR : MonoBehaviour {
 		lastCamPos = RightCamera.transform.position;
 	}
 
-	void OnTriggerEnter(Collider collider) {
-
+	void OnTriggerEnter(Collider collider) 
+	{
 		if (!collider.gameObject.CompareTag (RightCamera.tag)) {
 			return;
 		}
 
 		Vector3 currCamPos = RightCamera.transform.position;
 
-		if (crossed) {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
-				return;
-			}
-
-			invertLayers();
-		} else {
+		if (crossed) 
+		{
 			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
 				return;
 			}
-
+			invertLayers();
+		} 
+		else 
+		{
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
+				return;
+			}
 			invertLayers();
 		}
 
@@ -124,4 +146,5 @@ public class PortalVR : MonoBehaviour {
 
 		crossed = !crossed;
 	}
+
 }
