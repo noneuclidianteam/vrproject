@@ -317,6 +317,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &572728075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 572728076}
+  - component: {fileID: 572728078}
+  - component: {fileID: 572728077}
+  m_Layer: 9
+  m_Name: Detection_plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &572728076
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 572728075}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2004022995}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &572728077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 572728075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c67f304445ee0b43ac1711822e3f7aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+--- !u!65 &572728078
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 572728075}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2885835, y: 0.08981087, z: 2.7590225}
+  m_Center: {x: -0.24544466, y: 0.4550963, z: -0.22499017}
 --- !u!1 &584103680
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c67f304445ee0b43ac1711822e3f7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pillarIndexToActivate: 2
+  direction: 0
 --- !u!1 &594289794
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +518,7 @@ Transform:
   - {fileID: 584103681}
   - {fileID: 2017519158}
   m_Father: {fileID: 1896816565}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &670982880
 GameObject:
@@ -507,7 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c67f304445ee0b43ac1711822e3f7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pillarIndexToActivate: 3
+  direction: 1
 --- !u!65 &670982883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1977,7 +2031,7 @@ Transform:
   - {fileID: 670982881}
   - {fileID: 1935971442}
   m_Father: {fileID: 1896816565}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &1672160596
 GameObject:
@@ -2065,6 +2119,61 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1672160596}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1753440436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1753440437}
+  - component: {fileID: 1753440439}
+  - component: {fileID: 1753440438}
+  m_Layer: 9
+  m_Name: Trigger_plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1753440437
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1753440436}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.09750004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2004022995}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1753440438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1753440436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2bd926469884d44c975c3279922384d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPillar: {fileID: 895151015}
+  nextPillar: {fileID: 1447345415}
+--- !u!65 &1753440439
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1753440436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2885835, y: 0.08981087, z: 2.7590225}
+  m_Center: {x: -0.24544466, y: 0.4550963, z: -0.22499017}
 --- !u!4 &1787095383 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: f068cc17e4b7b5c4297122a684cec411, type: 3}
@@ -2098,6 +2207,7 @@ Transform:
   - {fileID: 1447345416}
   - {fileID: 980070478}
   - {fileID: 895151016}
+  - {fileID: 2004022995}
   - {fileID: 606797975}
   - {fileID: 1587131452}
   m_Father: {fileID: 0}
@@ -2146,7 +2256,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPillar: {fileID: 980070477}
   nextPillar: {fileID: 895151015}
-  nextPillarIndex: 3
 --- !u!65 &1935971444
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2245,6 +2354,36 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1957231677}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2004022994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2004022995}
+  m_Layer: 9
+  m_Name: ToFirstPillar_planes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2004022995
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004022994}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalPosition: {x: 0.00458, y: 0.001, z: -0.00351}
+  m_LocalScale: {x: 0.004000002, y: 0.0040000007, z: 0.0040000016}
+  m_Children:
+  - {fileID: 572728076}
+  - {fileID: 1753440437}
+  m_Father: {fileID: 1896816565}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &2013333478
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,7 +2599,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPillar: {fileID: 1447345415}
   nextPillar: {fileID: 980070477}
-  nextPillarIndex: 2
 --- !u!65 &2017519160
 BoxCollider:
   m_ObjectHideFlags: 0
