@@ -6,6 +6,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 
 	private Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
+	public bool isReversed = false;
 
     public GameObject pillar;
     public GameObject pillar_alt;
@@ -63,7 +64,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 
 		if (crossed)
         {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) 
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f && !isReversed) 
 				return;
 			
 			disableLayer (MainCamera, DestinationLayer);
@@ -76,7 +77,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 		}
         else
         {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) 
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f && isReversed) 
 				return;		
 
 			disableLayer (MainCamera, SourceLayer);
