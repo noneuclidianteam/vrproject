@@ -66,9 +66,9 @@ public class Portal : MonoBehaviour {
 			enableLayer (MainCamera, SourceLayer);
 
 			disableLayer (renderCamera, SourceLayer);
-			enableLayer (renderCamera, DestinationLayer);
+			enableLayer (renderCamera, DestinationLayer);           
 
-			this.gameObject.layer = SourceLayer;
+            this.gameObject.layer = SourceLayer;
 		} else {
 			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
 				return;
@@ -80,11 +80,11 @@ public class Portal : MonoBehaviour {
 			disableLayer (renderCamera, DestinationLayer);
 			enableLayer (renderCamera, SourceLayer);
 
-			this.gameObject.layer = DestinationLayer;
+            this.gameObject.layer = DestinationLayer;
 		}
 
 		this.gameObject.transform.Rotate (0f, 180f, 0f, Space.World);
-			
-		crossed = !crossed;
+
+        crossed = !crossed;
 	}
 }

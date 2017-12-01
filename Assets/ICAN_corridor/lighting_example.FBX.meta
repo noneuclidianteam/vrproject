@@ -1,0 +1,157 @@
+fileFormatVersion: 2
+guid: 31de7f9d74c524c47897e4f121b2d933
+timeCreated: 1512052514
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: ceiling_01
+    100002: door_wall_01
+    100004: ground_01
+    100006: //RootNode
+    100008: lo_door_batten
+    100010: lo_door_frame
+    100012: lo_groom_axis
+    100014: lo_groom_patin
+    100016: wall_002
+    100018: wall_003
+    100020: wall_01
+    400000: ceiling_01
+    400002: door_wall_01
+    400004: ground_01
+    400006: //RootNode
+    400008: lo_door_batten
+    400010: lo_door_frame
+    400012: lo_groom_axis
+    400014: lo_groom_patin
+    400016: wall_002
+    400018: wall_003
+    400020: wall_01
+    2300000: ceiling_01
+    2300002: door_wall_01
+    2300004: ground_01
+    2300006: lo_door_batten
+    2300008: lo_door_frame
+    2300010: lo_groom_axis
+    2300012: lo_groom_patin
+    2300014: wall_002
+    2300016: wall_003
+    2300018: wall_01
+    3300000: ceiling_01
+    3300002: door_wall_01
+    3300004: ground_01
+    3300006: lo_door_batten
+    3300008: lo_door_frame
+    3300010: lo_groom_axis
+    3300012: lo_groom_patin
+    3300014: wall_002
+    3300016: wall_003
+    3300018: wall_01
+    4300000: lo_door_frame
+    4300002: lo_door_batten
+    4300004: door_wall_01
+    4300006: ground_01
+    4300008: ceiling_01
+    4300010: wall_01
+    4300012: wall_002
+    4300014: lo_groom_axis
+    4300016: lo_groom_patin
+    4300018: wall_003
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ceiling_mat
+    second: {fileID: 2100000, guid: 4c3e8a633777dc748b4040bbad886380, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: door_mat
+    second: {fileID: 2100000, guid: 043dd7b47d3b92749ba2f3ad8536fd89, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground_mat
+    second: {fileID: -457204567, guid: 7f1c6a234e580f64abc1abf176b65fc0, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_mat
+    second: {fileID: 2100000, guid: bb107d4905900884e8208aeaaf834720, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
