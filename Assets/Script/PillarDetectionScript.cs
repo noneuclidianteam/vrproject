@@ -13,6 +13,7 @@ public class PillarDetectionScript : MonoBehaviour
     private Vector3 lastCamPos;
     private Vector3 directionVector;
 
+
     void Start ()
     {
         mainCamera = Camera.main;
@@ -21,7 +22,6 @@ public class PillarDetectionScript : MonoBehaviour
         //directionVector = direction.Equals(DirectionVector.Forward) ? transform.forward : (direction.Equals(DirectionVector.Backward) ? -transform.forward : transform.right);
 
         directionVector = direction.Equals(DirectionVector.Forward) ? transform.forward :  -transform.forward ;
-
     }
 
 
@@ -37,12 +37,12 @@ public class PillarDetectionScript : MonoBehaviour
         //   return;
 
         Vector3 currCamPos = mainCamera.transform.position;
-        
+
+        print("CameraDiff (" + (currCamPos.normalized - lastCamPos.normalized) + ") . Direction (" + directionVector + ") = " + Vector3.Dot(currCamPos - lastCamPos, directionVector));
 
         hasToEnablePillar = Vector3.Dot(currCamPos - lastCamPos, directionVector) <= 0f;
 
-
-        print(Vector3.Dot(currCamPos - lastCamPos, directionVector) + " to enable : " + hasToEnablePillar);
+        //print(Vector3.Dot(currCamPos - lastCamPos, directionVector) + " to enable : " + hasToEnablePillar);
     }
 }
 
