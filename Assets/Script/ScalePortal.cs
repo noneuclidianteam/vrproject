@@ -6,8 +6,10 @@ public class ScalePortal : MonoBehaviour {
 
 	public Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
-
     public GameObject otherPortal;
+
+    public bool hasReversedDirection = false;
+
 	private bool crossed = false;
 	private Camera renderCamera;
 	private Vector3 lastCamPos;
@@ -61,9 +63,9 @@ public class ScalePortal : MonoBehaviour {
 		Vector3 currCamPos = MainCamera.transform.position;
 
 		if (crossed) {
-			if ((Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f && DestinationLayer == 9)
-            ||  (Vector3.Dot(currCamPos - lastCamPos, transform.forward) <= 0f && DestinationLayer == 10) ) 
-				return;
+            if ((Vector3.Dot(currCamPos - lastCamPos, transform.forward) > 0f && !hasReversedDirection)
+            || (Vector3.Dot(currCamPos - lastCamPos, transform.forward) <= 0f && hasReversedDirection))
+                return;
 
             print("crossed");
 
@@ -79,8 +81,8 @@ public class ScalePortal : MonoBehaviour {
         }
         else
         {
-            if ((Vector3.Dot(currCamPos - lastCamPos, transform.forward) > 0f && DestinationLayer == 9)
-            || (Vector3.Dot(currCamPos - lastCamPos, transform.forward) <= 0f && DestinationLayer == 10))
+            if ((Vector3.Dot(currCamPos - lastCamPos, transform.forward) <= 0f && !hasReversedDirection)
+            || (Vector3.Dot(currCamPos - lastCamPos, transform.forward) > 0f && hasReversedDirection) )
                 return;
 
             disableLayer (MainCamera, SourceLayer);
