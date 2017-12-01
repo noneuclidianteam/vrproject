@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ScalePortal : MonoBehaviour {
 
-	public Camera MainCamera;
+	private Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
-    public GameObject otherPortal;
+  public GameObject otherPortal;
 
-    public bool hasReversedDirection = false;
+  public bool hasReversedDirection = false;
 
 	private bool crossed = false;
 	private Camera renderCamera;
@@ -25,6 +25,8 @@ public class ScalePortal : MonoBehaviour {
 
 
 	void Start () {
+
+		MainCamera = Camera.main;
 		renderCamera = (Camera) Camera.Instantiate(
 			MainCamera.GetComponent<Camera>(),
 			MainCamera.transform.position,
