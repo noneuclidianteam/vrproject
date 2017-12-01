@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Portal : MonoBehaviour {
+public class BiggerInsidePortal : MonoBehaviour {
 
 	public Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
+
+    public GameObject pillar;
+    public GameObject pillar_alt;
 
 	private bool crossed = false;
 	private Camera renderCamera;
@@ -20,7 +23,8 @@ public class Portal : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		renderCamera = (Camera) Camera.Instantiate(
 			MainCamera.GetComponent<Camera>(),
 			MainCamera.transform.position,
@@ -42,34 +46,36 @@ public class Portal : MonoBehaviour {
 		mat.mainTexture = renderCamera.targetTexture;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+
+	void Update ()
+    {
 		lastCamPos = MainCamera.transform.position;
 	}
 
-	void OnTriggerEnter(Collider collider) {
-
-		if (!collider.gameObject.CompareTag (MainCamera.tag)) {
+	void OnTriggerEnter(Collider collider)
+    {
+		if (!collider.gameObject.CompareTag (MainCamera.tag)) 
 			return;
-		}
-
+		
 		Vector3 currCamPos = MainCamera.transform.position;
 
-		if (crossed) {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
+		if (crossed)
+        {
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) 
 				return;
-			}
+			
 			disableLayer (MainCamera, DestinationLayer);
 			enableLayer (MainCamera, SourceLayer);
 
 			disableLayer (renderCamera, SourceLayer);
 			enableLayer (renderCamera, DestinationLayer);           
 
-            this.gameObject.layer = SourceLayer;
-		} else {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
-				return;
-			}
+            gameObject.layer = SourceLayer;
+		}
+        else
+        {
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) 
+				return;		
 
 			disableLayer (MainCamera, SourceLayer);
 			enableLayer (MainCamera, DestinationLayer);
@@ -77,10 +83,13 @@ public class Portal : MonoBehaviour {
 			disableLayer (renderCamera, DestinationLayer);
 			enableLayer (renderCamera, SourceLayer);
 
-            this.gameObject.layer = DestinationLayer;
+            gameObject.layer = DestinationLayer;
 		}
 
-		this.gameObject.transform.Rotate (0f, 180f, 0f, Space.World);
+		gameObject.transform.Rotate (0f, 180f, 0f, Space.World);
+
+        pillar.SetActive(crossed);
+        pillar_alt.SetActive(!crossed);
 
         crossed = !crossed;
 	}

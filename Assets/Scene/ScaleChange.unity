@@ -289,8 +289,8 @@ GameObject:
   - component: {fileID: 1046479724}
   - component: {fileID: 1046479723}
   - component: {fileID: 1046479721}
-  - component: {fileID: 1046479725}
   - component: {fileID: 1046479722}
+  - component: {fileID: 1046479725}
   m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1046479720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53292fbbd53bc564aad2f23a72793bc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ca388e425009dd438c3194f54796a8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 1206452473}
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 1054160768}
   - component: {fileID: 1054160767}
   m_Layer: 9
-  m_Name: Door_ALT
+  m_Name: Pilar_ALT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -458,8 +458,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1054160766}
   m_LocalRotation: {x: -0.50000006, y: 0.49999997, z: 0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: 0, y: 0.969, z: 0.772}
-  m_LocalScale: {x: 0.5, y: 1.8, z: 2}
+  m_LocalPosition: {x: 0, y: 0.882, z: 0.757}
+  m_LocalScale: {x: 0.5, y: 1.5, z: 1.8}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -792,8 +792,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1867356563}
   m_LocalRotation: {x: -0.50000006, y: 0.49999997, z: 0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: 0, y: 2.45, z: 0}
-  m_LocalScale: {x: 1, y: 1.8, z: 5}
+  m_LocalPosition: {x: 0.015, y: 2.45, z: 0.253}
+  m_LocalScale: {x: 0.5, y: 1.5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
