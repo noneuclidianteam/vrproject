@@ -24,6 +24,7 @@ public class GravityTestInverter : MonoBehaviour {
 	{
 		if (ObjectCol.tag == "InverterPortal") 
 		{
+			print("Trigger reached");
 			if (IsInverted == false) {
 				Normal.SetActive (false);
 				Innverted.SetActive (true);
