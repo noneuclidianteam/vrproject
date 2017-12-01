@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BiggerInsidePortal : MonoBehaviour {
 
-	public Camera MainCamera;
+	private Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
 
     public GameObject pillar;
@@ -25,7 +25,9 @@ public class BiggerInsidePortal : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		renderCamera = (Camera) Camera.Instantiate(
+        MainCamera = Camera.main;
+
+        renderCamera = (Camera) Camera.Instantiate(
 			MainCamera.GetComponent<Camera>(),
 			MainCamera.transform.position,
 			MainCamera.transform.rotation,
