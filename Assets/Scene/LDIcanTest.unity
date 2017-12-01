@@ -449,6 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 17
   DestinationLayer: 16
+  isReversed: 0
   pillar: {fileID: 427004679}
   pillar_alt: {fileID: 1675416522}
 --- !u!65 &79475589
@@ -1349,7 +1350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &352988516
 Transform:
   m_ObjectHideFlags: 0
@@ -1376,6 +1377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 16
   DestinationLayer: 15
+  isReversed: 0
   pillar: {fileID: 1675416522}
   pillar_alt: {fileID: 1627247244}
 --- !u!65 &352988518
@@ -1518,7 +1520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &427004680
 Transform:
   m_ObjectHideFlags: 0
@@ -1526,7 +1528,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 427004679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.000000059605, z: 0.00000047684}
+  m_LocalPosition: {x: 0, y: -0.000000059605, z: -0.8999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 71093669}
@@ -1720,7 +1722,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &452361879
 Transform:
   m_ObjectHideFlags: 0
@@ -1747,6 +1749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 15
   DestinationLayer: 14
+  isReversed: 0
   pillar: {fileID: 1627247244}
   pillar_alt: {fileID: 590785391}
 --- !u!65 &452361881
@@ -2233,7 +2236,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 590785391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1043114423}
@@ -4003,6 +4006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 14
   DestinationLayer: 15
+  isReversed: 0
   pillar: {fileID: 590785391}
   pillar_alt: {fileID: 1627247244}
 --- !u!1 &1069474073
@@ -6256,7 +6260,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627247244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.000000059605, z: 0.00000047684}
+  m_LocalPosition: {x: 0, y: -0.000000059605, z: -0.8999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 146967243}
@@ -6320,6 +6324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 16
   DestinationLayer: 17
+  isReversed: 0
   pillar: {fileID: 1675416522}
   pillar_alt: {fileID: 427004679}
 --- !u!65 &1627793874
@@ -6682,7 +6687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1675416523
 Transform:
   m_ObjectHideFlags: 0
@@ -6690,7 +6695,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1675416522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.000000059605, z: 0.00000047684}
+  m_LocalPosition: {x: 0, y: -0.000000059605, z: -0.8999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 320863799}
@@ -8005,6 +8010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SourceLayer: 15
   DestinationLayer: 16
+  isReversed: 0
   pillar: {fileID: 1627247244}
   pillar_alt: {fileID: 1675416522}
 --- !u!65 &2075648708
