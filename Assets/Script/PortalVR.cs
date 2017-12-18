@@ -5,16 +5,20 @@ using Valve.VR;
 
 public class PortalVR : MonoBehaviour {
 
-	public Camera RightCamera, LeftCamera;
+	public Camera MainCamera;
 
-	public int SourceLayer, DestinationLayer, 
-		RightOnlySourceLayer, LeftOnlySourceLayer,
-		RightOnlyDestinationLayer, LeftOnlyDestinationLayer;
+	public int SourceLayer, DestinationLayer;
+
+	public int textureSize = 1024;
 
 	private bool crossed = false;
-	private Camera renderCameraRight, renderCameraLeft;
-	private GameObject portalRightOnly, portalLeftOnly;
+	private Camera renderCamera;
 	private Vector3 lastCamPos;
+
+	private RenderTexture _leftEyeRenderTexture;
+	private RenderTexture _rightEyeRenderTexture;
+
+	Material mat;
 
 	private void enableLayer(Camera cam, int layer) {
 		cam.cullingMask = cam.cullingMask | 1 << layer;
@@ -24,122 +28,62 @@ public class PortalVR : MonoBehaviour {
 		cam.cullingMask = cam.cullingMask & ~(1 << layer);
 	}
 
-	private void swapLayers(ref int layer1, ref int layer2) {
-		int tmp = layer1;
-		layer1 = layer2;
-		layer2 = tmp;
-	}
-
-	private void changePortalsLayer()
-	{
-		print("Portal layers : " + portalLeftOnly);
-		
-		if (portalLeftOnly.layer == LeftOnlyDestinationLayer)
-		{
-				portalLeftOnly.layer = LeftOnlySourceLayer;
-				portalRightOnly.layer = RightOnlySourceLayer;
-		}
-			else
-		{
-				portalLeftOnly.layer = LeftOnlyDestinationLayer;
-				portalRightOnly.layer = RightOnlyDestinationLayer;
-		}
-	}
-
-	private void invertLayers() {
-
-		print("inverting swapLayers");
-
-		swapLayers(ref SourceLayer, ref DestinationLayer);
-		swapLayers(ref RightOnlySourceLayer, ref RightOnlyDestinationLayer);
-		swapLayers(ref LeftOnlySourceLayer, ref LeftOnlyDestinationLayer);
-
-		enableLayer(LeftCamera, SourceLayer);
-		disableLayer(LeftCamera, DestinationLayer);
-		enableLayer(LeftCamera, LeftOnlySourceLayer);
-		disableLayer(LeftCamera, LeftOnlyDestinationLayer);
-
-		enableLayer(RightCamera, SourceLayer);
-		disableLayer(RightCamera, DestinationLayer);
-		enableLayer(RightCamera, RightOnlySourceLayer);
-		disableLayer(RightCamera, RightOnlyDestinationLayer);
-
-		changePortalsLayer();
-	}
-
-	Camera createRenderCameraFrom(Camera cam) {
-		Camera renderCamera = (Camera) Camera.Instantiate(
-			cam.GetComponent<Camera>(),
-			cam.transform.position,
-			cam.transform.rotation,
-			cam.transform
-		);
-
-		renderCamera.tag = "Untagged";
-
-		enableLayer(renderCamera, DestinationLayer);
-		disableLayer(renderCamera, SourceLayer);
-
-		renderCamera.targetTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
-
-		return renderCamera;
-	}
-
 	// Use this for initialization
 	void Start () {
+		GameObject cameraGameObject = new GameObject ();
+		renderCamera = (Camera)cameraGameObject.AddComponent<Camera> ();
+		renderCamera.tag = "Untagged";
 
-		if (this.gameObject.name.Contains("Clone")) {
-			return;
-		}
+		enableLayer (renderCamera, DestinationLayer);
+		disableLayer (renderCamera, SourceLayer);
 
-		renderCameraRight = createRenderCameraFrom(RightCamera);
-		enableLayer (renderCameraRight, RightOnlyDestinationLayer);
-		disableLayer (renderCameraRight, RightOnlySourceLayer);
+		enableLayer (MainCamera, SourceLayer);
+		disableLayer (MainCamera, DestinationLayer);
 
-		renderCameraLeft = createRenderCameraFrom(LeftCamera);
-		enableLayer (renderCameraLeft, LeftOnlyDestinationLayer);
-		disableLayer (renderCameraLeft, LeftOnlySourceLayer);
+		_leftEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
+		_rightEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
 
-		portalRightOnly = this.gameObject;
-		portalLeftOnly = Instantiate(portalRightOnly);
-
-		Material matRight = new Material(Shader.Find("Hidden/PortalEffectShader"));
-		GetComponent<Renderer> ().material = matRight;
-		matRight.mainTexture = renderCameraRight.targetTexture;
-		portalLeftOnly.layer = LeftOnlySourceLayer;
-
-		Material matLeft = new Material(Shader.Find("Hidden/PortalEffectShader"));
-		portalLeftOnly.GetComponent<Renderer>().material = matLeft;
-		matLeft.mainTexture = renderCameraLeft.targetTexture;
-		portalLeftOnly.layer = LeftOnlySourceLayer;
+		Material mat = new Material(Shader.Find("Custom/PortalShaderVR"));
+		GetComponent<Renderer> ().material = mat;
+		mat.mainTexture = renderCamera.targetTexture;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		lastCamPos = RightCamera.transform.position;
+		lastCamPos = MainCamera.transform.position;
 	}
 
-	void OnTriggerEnter(Collider collider) 
-	{
-		if (!collider.gameObject.CompareTag (RightCamera.tag)) {
+	void OnTriggerEnter(Collider collider) {
+
+		if (!collider.gameObject.CompareTag (MainCamera.tag)) {
 			return;
 		}
 
-		Vector3 currCamPos = RightCamera.transform.position;
+		Vector3 currCamPos = MainCamera.transform.position;
 
-		if (crossed) 
-		{
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
-				return;
-			}
-			invertLayers();
-		} 
-		else 
-		{
+		if (crossed) {
 			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
 				return;
 			}
-			invertLayers();
+			disableLayer (MainCamera, DestinationLayer);
+			enableLayer (MainCamera, SourceLayer);
+
+			disableLayer (renderCamera, SourceLayer);
+			enableLayer (renderCamera, DestinationLayer);
+
+			this.gameObject.layer = SourceLayer;
+		} else {
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
+				return;
+			}
+
+			disableLayer (MainCamera, SourceLayer);
+			enableLayer (MainCamera, DestinationLayer);
+
+			disableLayer (renderCamera, DestinationLayer);
+			enableLayer (renderCamera, SourceLayer);
+
+			this.gameObject.layer = DestinationLayer;
 		}
 
 		this.gameObject.transform.Rotate (0f, 180f, 0f, Space.World);
@@ -147,4 +91,59 @@ public class PortalVR : MonoBehaviour {
 		crossed = !crossed;
 	}
 
+	private Matrix4x4 HMDMatrix4x4ToMatrix4x4(Valve.VR.HmdMatrix44_t input) {
+		var m = Matrix4x4.identity;
+		m[0, 0] = input.m0;
+		m[0, 1] = input.m1;
+		m[0, 2] = input.m2;
+		m[0, 3] = input.m3;
+		m[1, 0] = input.m4;
+		m[1, 1] = input.m5;
+		m[1, 2] = input.m6;
+		m[1, 3] = input.m7;
+		m[2, 0] = input.m8;
+		m[2, 1] = input.m9;
+		m[2, 2] = input.m10;
+		m[2, 3] = input.m11;
+		m[3, 0] = input.m12;
+		m[3, 1] = input.m13;
+		m[3, 2] = input.m14;
+		m[3, 3] = input.m15;
+		return m; 
+	}
+
+	public void OnWillRenderObject() {
+		if (Camera.current == MainCamera) {
+			transform.localRotation = MainCamera.transform.localRotation;
+
+			// left eye
+			Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
+			transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+			renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
+				SteamVR.instance.hmd.GetProjectionMatrix(
+					Valve.VR.EVREye.Eye_Left,
+					MainCamera.nearClipPlane,
+					MainCamera.farClipPlane
+				)
+			);
+			renderCamera.targetTexture = _leftEyeRenderTexture;
+			renderCamera.Render();
+			mat.SetTexture("_LeftEyeTexture", _leftEyeRenderTexture);
+
+			// right eye
+			eyeOffset = SteamVR.instance.eyes[1].pos;
+			transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+			renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
+				SteamVR.instance.hmd.GetProjectionMatrix(
+					Valve.VR.EVREye.Eye_Right,
+					MainCamera.nearClipPlane,
+					MainCamera.farClipPlane
+				)
+			);
+			renderCamera.targetTexture = _rightEyeRenderTexture;
+			renderCamera.Render();
+			mat.SetTexture("_RightEyeTexture", _rightEyeRenderTexture);
+		} 
+	}
+		
 }
