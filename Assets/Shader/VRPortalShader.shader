@@ -1,47 +1,67 @@
-﻿Shader "Custom/portal_shader" {
-	Properties {
-		_LeftTex ("Albedo (RGB)", 2D) = "white" {}
-		_RightTex ("Albedo (RGB)", 2D) = "white" {}
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/PortalShaderVR" {
+	Properties{
+		_LeftEyeTexture("Left Eye Texture", 2D) = "white" {}
+		_RightEyeTexture("Left Eye Texture", 2D) = "white" {}
 	}
-	SubShader {
-		Tags { "RenderType"="Opaque" }
-		LOD 200
-		
-		CGPROGRAM
-		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows
 
-		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 3.0
+	SubShader{
+		Tags{ "RenderType" = "Opaque" }
+		LOD 100
 
-		sampler2D _LeftTex;
-		sampler2D _RightTex;
+		Pass
+		{
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma target 3.0
 
-		struct Input {
-			float2 uv_MainTex;
-		};
+			#pragma multi_compile __ STEREO_RENDER
 
-		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-		// #pragma instancing_options assumeuniformscaling
-		UNITY_INSTANCING_CBUFFER_START(Props)
-			// put more per-instance properties here
-		UNITY_INSTANCING_CBUFFER_END
+			#include "UnityCG.cginc"
 
-		void surf (Input IN, inout SurfaceOutputStandard o) {
-			// Metallic and smoothness come from slider variables
-			//if (unity_StereoEyeIndex == 0)
-			if (unity_CameraProjection[0][2] < 0) {
-				float4 c = tex2D(_LeftTex, IN.uv_MainTex);
-				o.Albedo = c.rgb;
-				o.Alpha = c.a;
-			} else {
-				float4 c = tex2D(_RightTex, IN.uv_MainTex);
-				o.Albedo = c.rgb;
-				o.Alpha = c.a;
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float2 uv:TEXCOORD0;
+			};
+
+			struct v2f
+			{
+				float2 uv : TEXCOORD0;
+			};
+
+			sampler2D _LeftEyeTexture;
+			sampler2D _RightEyeTexture;
+
+			v2f vert(appdata v, out float4 outpos : SV_POSITION)
+			{
+				v2f o;
+				outpos = UnityObjectToClipPos(v.vertex);
+
+				o.uv = v.uv;
+				return o;
 			}
+
+			fixed4 frag(v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
+			{
+				float2 sUV = screenPos.xy / _ScreenParams.xy;
+
+				fixed4 col = fixed4(0.0, 0.0, 0.0, 0.0);
+				if (unity_CameraProjection[0][2] < 0)
+				{
+					col = tex2D(_LeftEyeTexture, sUV);
+				}
+				else {
+					col = tex2D(_RightEyeTexture, sUV);
+				}
+
+				return col;
+			}
+			ENDCG
 		}
-		ENDCG
 	}
-	FallBack "Diffuse"
+
+	Fallback "Diffuse"
 }
