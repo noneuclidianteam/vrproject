@@ -22,6 +22,9 @@ public class PortalCamera : MonoBehaviour {
 
 	public void RenderIntoMaterial(Material material) {
 		if (Camera.current == _vrEye) {
+
+		}
+			
 			transform.localRotation = _vrEye.transform.localRotation; // left eye
 			Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
 			transform.localPosition = _vrEye.transform.position + _vrEye.transform.TransformVector(eyeOffset);
@@ -36,7 +39,7 @@ public class PortalCamera : MonoBehaviour {
 			_cameraForPortal.Render();
 
 
-			material.SetTexture("_LeftEyeTexture", _leftEyeRenderTexture); // right eye
+			material.SetTexture("_LeftTex", _leftEyeRenderTexture); // right eye
 			eyeOffset = SteamVR.instance.eyes[1].pos;
 			transform.localPosition = _vrEye.transform.position + _vrEye.transform.TransformVector(eyeOffset);
 			_cameraForPortal.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
@@ -47,8 +50,9 @@ public class PortalCamera : MonoBehaviour {
 				)
 			);
 			_cameraForPortal.targetTexture = _rightEyeRenderTexture;
-			_cameraForPortal.Render(); material.SetTexture("_RightEyeTexture", _rightEyeRenderTexture);
-		} 
+			_cameraForPortal.Render();
+			material.SetTexture("_RightTex", _rightEyeRenderTexture);
+		//} 
 	}
 
 	private Matrix4x4 HMDMatrix4x4ToMatrix4x4(Valve.VR.HmdMatrix44_t input) {
