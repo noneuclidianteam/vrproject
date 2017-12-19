@@ -14,7 +14,7 @@ public class PortalVR : MonoBehaviour {
 	public int cameraPositionHistorySize = 20;
 
 	private bool crossed = false;
-	private Camera renderCamera;
+	private static Camera renderCamera = null;
 	private Vector3 lastCamPos;
 
 	private RenderTexture _leftEyeRenderTexture;
@@ -22,7 +22,7 @@ public class PortalVR : MonoBehaviour {
 
 	Material mat;
 
-	private Queue<Vector3> cameraPositions;
+	private Queue<Vector3> cameraPositions = new Queue<Vector3>();
 	private Vector3 cameraDirection = Vector3.zero;
 
 	private void enableLayer(Camera cam, int layer) {
@@ -35,9 +35,12 @@ public class PortalVR : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject cameraGameObject = new GameObject ();
-		renderCamera = (Camera)cameraGameObject.AddComponent<Camera> ();
-		renderCamera.tag = "Untagged";
+		if (renderCamera == null) {
+			GameObject cameraGameObject = new GameObject ();
+			renderCamera = (Camera)cameraGameObject.AddComponent<Camera> ();
+			renderCamera.tag = "Untagged";
+			renderCamera.useOcclusionCulling = true;
+		}
 
 		enableLayer (renderCamera, DestinationLayer);
 		disableLayer (renderCamera, SourceLayer);
@@ -48,10 +51,12 @@ public class PortalVR : MonoBehaviour {
 		_leftEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
 		_rightEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
 
-		Material mat = new Material(Shader.Find("Custom/PortalShaderVR"));
+		mat = new Material(Shader.Find("Custom/PortalShaderVR"));
 		GetComponent<Renderer> ().material = mat;
 		mat.mainTexture = renderCamera.targetTexture;
 	}
+
+	int cpt = 0;
 
 	// Update is called once per frame
 	void Update () {
@@ -67,16 +72,21 @@ public class PortalVR : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
 
+		print("test");
+
 		if (!collider.gameObject.CompareTag (MainCamera.tag)) {
 			return;
 		}
 
 		Vector3 currCamPos = MainCamera.transform.position;
 
+		print(string.Format("{0} {1} {2}", cameraDirection, transform.parent.forward, Vector3.Dot (cameraDirection, transform.parent.forward)));
+			
+		if (Vector3.Dot (cameraDirection, transform.parent.forward) > 0f) {
+			return;
+		}
+
 		if (crossed) {
-			if (Vector3.Dot (cameraDirection, transform.forward) > 0f) {
-				return;
-			}
 			disableLayer (MainCamera, DestinationLayer);
 			enableLayer (MainCamera, SourceLayer);
 
@@ -85,10 +95,6 @@ public class PortalVR : MonoBehaviour {
 
 			this.gameObject.layer = SourceLayer;
 		} else {
-			if (Vector3.Dot (cameraDirection, transform.forward) < 0f) {
-				return;
-			}
-
 			disableLayer (MainCamera, SourceLayer);
 			enableLayer (MainCamera, DestinationLayer);
 
@@ -98,7 +104,7 @@ public class PortalVR : MonoBehaviour {
 			this.gameObject.layer = DestinationLayer;
 		}
 
-		this.gameObject.transform.Rotate (0f, 180f, 0f, Space.World);
+		this.gameObject.transform.parent.Rotate (0f, 180f, 0f);
 
 		crossed = !crossed;
 	}
@@ -126,11 +132,11 @@ public class PortalVR : MonoBehaviour {
 
 	public void OnWillRenderObject() {
 		if (Camera.current == MainCamera) {
-			transform.localRotation = MainCamera.transform.localRotation;
+			renderCamera.transform.localRotation = MainCamera.transform.localRotation;
 
 			// left eye
 			Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
-			transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+			renderCamera.transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
 			renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 				SteamVR.instance.hmd.GetProjectionMatrix(
 					Valve.VR.EVREye.Eye_Left,
@@ -144,7 +150,7 @@ public class PortalVR : MonoBehaviour {
 
 			// right eye
 			eyeOffset = SteamVR.instance.eyes[1].pos;
-			transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+			renderCamera.transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
 			renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 				SteamVR.instance.hmd.GetProjectionMatrix(
 					Valve.VR.EVREye.Eye_Right,
