@@ -20,17 +20,31 @@ public class PortalVR : MonoBehaviour {
 	private RenderTexture _leftEyeRenderTexture;
 	private RenderTexture _rightEyeRenderTexture;
 
+	private static int playerLayer = 8;
+
+	private int portalLayer;
+
 	Material mat;
 
 	private Queue<Vector3> cameraPositions = new Queue<Vector3>();
 	private Vector3 cameraDirection = Vector3.zero;
 
 	private void enableLayer(Camera cam, int layer) {
+		print(string.Format("Enabling layer {0} on camera {1}", layer, cam.tag));
 		cam.cullingMask = cam.cullingMask | 1 << layer;
 	}
 
 	private void disableLayer(Camera cam, int layer) {
+		print(string.Format("Disabling layer {0} on camera {1}", layer, cam.tag));
 		cam.cullingMask = cam.cullingMask & ~(1 << layer);
+	}
+
+	private void setVisibleLayer(Camera cam, int layer) {
+		for (int i=8; i<=11; i++) {
+			disableLayer(cam, i);
+		}
+
+		enableLayer(cam, layer);
 	}
 
 	// Use this for initialization
@@ -40,13 +54,10 @@ public class PortalVR : MonoBehaviour {
 			renderCamera = (Camera)cameraGameObject.AddComponent<Camera> ();
 			renderCamera.tag = "Untagged";
 			renderCamera.useOcclusionCulling = true;
+			renderCamera.enabled = false;
 		}
 
-		enableLayer (renderCamera, DestinationLayer);
-		disableLayer (renderCamera, SourceLayer);
-
-		enableLayer (MainCamera, SourceLayer);
-		disableLayer (MainCamera, DestinationLayer);
+		portalLayer  = DestinationLayer;
 
 		_leftEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
 		_rightEyeRenderTexture = new RenderTexture(textureSize, textureSize, 24);
@@ -86,22 +97,34 @@ public class PortalVR : MonoBehaviour {
 			return;
 		}
 
+		for (int i=8; i<=11; i++) {
+			disableLayer(renderCamera, i);
+		}
+
 		if (crossed) {
-			disableLayer (MainCamera, DestinationLayer);
-			enableLayer (MainCamera, SourceLayer);
+			if (playerLayer != DestinationLayer) {
+				return;
+			}
+
+			setVisibleLayer(MainCamera, SourceLayer);
 
 			disableLayer (renderCamera, SourceLayer);
 			enableLayer (renderCamera, DestinationLayer);
 
 			this.gameObject.layer = SourceLayer;
+
+			portalLayer = DestinationLayer;
 		} else {
+			if (playerLayer != SourceLayer) {
+				return;
+			}
+
 			disableLayer (MainCamera, SourceLayer);
 			enableLayer (MainCamera, DestinationLayer);
 
-			disableLayer (renderCamera, DestinationLayer);
-			enableLayer (renderCamera, SourceLayer);
-
 			this.gameObject.layer = DestinationLayer;
+
+			portalLayer = SourceLayer;
 		}
 
 		this.gameObject.transform.parent.Rotate (0f, 180f, 0f);
@@ -132,6 +155,8 @@ public class PortalVR : MonoBehaviour {
 
 	public void OnWillRenderObject() {
 		if (Camera.current == MainCamera) {
+			setVisibleLayer(renderCamera, portalLayer);
+
 			renderCamera.transform.localRotation = MainCamera.transform.localRotation;
 
 			// left eye
@@ -161,7 +186,7 @@ public class PortalVR : MonoBehaviour {
 			renderCamera.targetTexture = _rightEyeRenderTexture;
 			renderCamera.Render();
 			mat.SetTexture("_RightEyeTexture", _rightEyeRenderTexture);
-		} 
+		}
 	}
 		
 }
