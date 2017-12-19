@@ -11,6 +11,8 @@ public class PortalVR : MonoBehaviour {
 
 	public int textureSize = 1024;
 
+	public int cameraPositionHistorySize = 20;
+
 	private bool crossed = false;
 	private Camera renderCamera;
 	private Vector3 lastCamPos;
@@ -19,6 +21,9 @@ public class PortalVR : MonoBehaviour {
 	private RenderTexture _rightEyeRenderTexture;
 
 	Material mat;
+
+	private Queue<Vector3> cameraPositions;
+	private Vector3 cameraDirection = Vector3.zero;
 
 	private void enableLayer(Camera cam, int layer) {
 		cam.cullingMask = cam.cullingMask | 1 << layer;
@@ -50,7 +55,14 @@ public class PortalVR : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		lastCamPos = MainCamera.transform.position;
+		cameraPositions.Enqueue(MainCamera.transform.position);
+		cameraDirection += MainCamera.transform.position;
+
+		if (cameraPositions.Count >= cameraPositionHistorySize) {
+			cameraDirection -= cameraPositions.Dequeue();
+		}
+
+		cameraDirection.Normalize();
 	}
 
 	void OnTriggerEnter(Collider collider) {
@@ -62,7 +74,7 @@ public class PortalVR : MonoBehaviour {
 		Vector3 currCamPos = MainCamera.transform.position;
 
 		if (crossed) {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) {
+			if (Vector3.Dot (cameraDirection, transform.forward) > 0f) {
 				return;
 			}
 			disableLayer (MainCamera, DestinationLayer);
@@ -73,7 +85,7 @@ public class PortalVR : MonoBehaviour {
 
 			this.gameObject.layer = SourceLayer;
 		} else {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) {
+			if (Vector3.Dot (cameraDirection, transform.forward) < 0f) {
 				return;
 			}
 
