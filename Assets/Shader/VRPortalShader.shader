@@ -7,7 +7,7 @@ Shader "Custom/PortalShader" {
 
 		_VREnabled("VR Enabled", Int) = 0
 
-		_Visible("Is this portal visible", Int) = 1
+		_BluredPortal("Portal blur effect", Int) = 0
 	}
 
 	SubShader{
@@ -41,7 +41,7 @@ Shader "Custom/PortalShader" {
 			sampler2D _LeftEyeTexture;
 			sampler2D _RightEyeTexture;
 			int _VREnabled;
-			int _Visible;
+			int _BluredPortal;
 
 			float offsetX(float input) {
 				return input + cos(input * 200.0f + _Time.w * 2.0f) / 300.0f;
@@ -63,17 +63,13 @@ Shader "Custom/PortalShader" {
 
 			fixed4 frag(v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
 			{
-				if (_Visible == 0) {
-					return fixed4(0.0, 0.0, 0.0, 0.0);
-				}
-
 				float2 sUV = screenPos.xy / _ScreenParams.xy;
 
 				if (unity_CameraProjection[0][2] < 0 || _VREnabled == 0)
 				{
-					return tex2D(_LeftEyeTexture, sUV);
+					return _BluredPortal ? tex2D(_LeftEyeTexture, float2(offsetX(sUV.x), offsetY(sUV.y))) : tex2D(_LeftEyeTexture, sUV);
 				}else {
-					return tex2D(_RightEyeTexture, sUV);
+					return _BluredPortal ? tex2D(_RightEyeTexture, float2(offsetX(sUV.x), offsetY(sUV.y))) : tex2D(_RightEyeTexture, sUV);
 				}
 			}
 			ENDCG

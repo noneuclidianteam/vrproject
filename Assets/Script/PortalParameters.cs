@@ -7,6 +7,7 @@ public class PortalParameters : MonoBehaviour {
 	public static PortalParameters instance = null;
 
 	public bool EnableVR = false;
+	public bool PortalBlur = false;
 	public Camera Camera;
 	public Camera VRCamera;
 	public GameObject VRCameraRig;

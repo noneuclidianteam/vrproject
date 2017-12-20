@@ -87,11 +87,10 @@ public class Portal2 : MonoBehaviour {
 
 	public void preparePortalRenderStereo() {
 		renderCamera.transform.rotation = playerCamera.transform.rotation;
-		renderCamera.transform.position = playerCamera.transform.position + roomOffset;
 
 		// left eye
 		Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
-		renderCamera.transform.position += playerCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = playerCamera.transform.position + roomOffset + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Left,
@@ -105,8 +104,7 @@ public class Portal2 : MonoBehaviour {
 
 		// right eye
 		eyeOffset = SteamVR.instance.eyes[1].pos;
-		renderCamera.transform.position -= playerCamera.transform.TransformVector(eyeOffset);
-		renderCamera.transform.position -= playerCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = playerCamera.transform.position + roomOffset + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Right,
@@ -185,6 +183,8 @@ public class Portal2 : MonoBehaviour {
 		if (Camera.current != playerCamera) {
 			return;
 		}
+
+		portalMaterial.SetInt("_BluredPortal", PortalParameters.instance.PortalBlur ? 1 : 0);
 
 		if (PortalParameters.instance.EnableVR) {
 			preparePortalRenderStereo ();
