@@ -97,21 +97,21 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.5
-    agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
+    agentRadius: 0.15
+    agentHeight: 1
+    agentSlope: 25
+    agentClimb: 0.1
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.16666667
+    cellSize: 0.05
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: be0450b35f6e6334bba83bdaeef34d50, type: 2}
 --- !u!1 &126080010
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 126080010}
-  m_LocalRotation: {x: 0.7952055, y: -0, z: -0, w: 0.60634}
+  m_LocalRotation: {x: 0.79520553, y: -0, z: -0, w: 0.60634005}
   m_LocalPosition: {x: 0, y: 0.08399999, z: 0.749}
   m_LocalScale: {x: 0.078897595, y: 0.078897595, z: 0.078897595}
   m_Children: []
@@ -773,7 +773,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!23 &602039814
 MeshRenderer:
@@ -1732,6 +1732,7 @@ GameObject:
   - component: {fileID: 1506767337}
   - component: {fileID: 1506767338}
   - component: {fileID: 1506767339}
+  - component: {fileID: 1506767340}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -1768,10 +1769,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 1
   monsterSpeed: 0.3
+  followTime: 3
   playerDetectionTolerance: 1
   playerTransform: {fileID: 184477950}
   hand1: {fileID: 1293924253}
   hand2: {fileID: 448953739}
+  isFollowingPlayer: 0
 --- !u!54 &1506767339
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1787,6 +1790,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!195 &1506767340
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506767336}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0.68
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1598186590
 GameObject:
   m_ObjectHideFlags: 0

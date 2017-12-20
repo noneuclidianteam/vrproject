@@ -9,16 +9,20 @@ public class MonsterScript : MonoBehaviour
     public bool isDebug;
 
     [Range(0.01f, 1.0f)]
-    public float monsterSpeed = 0.2f;
+    public float monsterSpeed = 0.3f;
 
+    public float followTime = 3.0f;
     public float playerDetectionTolerance = 2.0f;
     private float playerHeadSpeed;
+    private float startFollowTime;
 
     public Transform playerTransform;
 
-    Vector3 prevPlayerHeadPos = Vector3.zero;
+    private Vector3 prevPlayerHeadPos = Vector3.zero;
 
-    public Hand hand1;    public Hand hand2;
+    public Hand hand1, hand2;
+
+    public bool isFollowingPlayer = false;
 
 
     void Start()
@@ -39,22 +43,24 @@ public class MonsterScript : MonoBehaviour
         //if(hand2.controller != null)
         //    hand2.controller.velocity;
  
-
         playerHeadSpeed = (playerTransform.position - prevPlayerHeadPos).magnitude / Time.deltaTime;
-
-        // Contrôle sur la vitesse du joueur + déplacement du monstre si tolérance dépassée
+                   
+        // Le personnage est détecté par le monstre
         if (playerHeadSpeed > playerDetectionTolerance)
         {
-            print("Monster is moving ...");
-            transform.LookAt(playerTransform);
-            transform.Translate((playerTransform.position - transform.position) * Time.deltaTime);
+            startFollowTime = Time.time;
+            isFollowingPlayer = true;
         }
+        
+        if (isFollowingPlayer)
+            MoveToPlayer();       
         else
         {
-            // Déplacement du monstre
+            // Déplacement aléatoire du monstre
             if ((int)(Time.time * 100) % 20 == 0)
             {
-                transform.Translate(new Vector3(Random.Range(-1.0f, 1.0f) * monsterSpeed, 0.0f, Random.Range(-1.0f, 1.0f) * monsterSpeed));
+                transform.Translate(new Vector3(Random.Range(-15, 15) * monsterSpeed * Time.deltaTime, 0.0f, Random.Range(-15, 15) * monsterSpeed) * Time.deltaTime);
+                transform.Rotate(new Vector3(0.0f, Random.Range(-45.0f, 45.0f), 0.0f));
             }
         }
 
@@ -62,9 +68,23 @@ public class MonsterScript : MonoBehaviour
     }
 
 
+    private void MoveToPlayer()
+    {
+        if (Time.time - startFollowTime > followTime)
+        {
+            isFollowingPlayer = false;
+            return;
+        }
+
+        print("Monster is moving ...");
+        transform.LookAt(playerTransform);
+        transform.Translate((playerTransform.position - transform.position) * Time.deltaTime * monsterSpeed);
+    }
+
+
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag.Equals("Player"))
+        if (col.tag.Equals("Player") && isFollowingPlayer)
         {
             print("You died !");           
         }
