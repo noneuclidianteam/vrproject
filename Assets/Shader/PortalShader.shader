@@ -1,6 +1,6 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "Hidden/PortalEffectShader"
+Shader "Hidden/PortalShader"
 {
 	Properties
 	{
@@ -61,9 +61,9 @@ Shader "Hidden/PortalEffectShader"
 				//fixed4 col = tex2D(_MainTex, float2(offsetX(i.screenPos.x), offsetY(i.screenPos.y)));
 				//col += reflectX(i.screenPos.x) + reflectY(i.screenPos.y);
 
-				fixed4 col = tex2D(_MainTex, float2(i.screenPos.x, i.screenPos.y));
+				return tex2D(_MainTex, float2(i.screenPos.x, i.screenPos.y));
 				
-				return col;
+				//return col;
 			}
 			ENDCG
 		}
