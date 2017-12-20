@@ -5,13 +5,16 @@ Shader "Custom/PortalShader" {
 		_LeftEyeTexture("Left Eye Texture", 2D) = "white" {}
 		_RightEyeTexture("Left Eye Texture", 2D) = "white" {}
 
-		[Toggle(EnableVR)]
 		_VREnabled("VR Enabled", Int) = 0
+
+		_Visible("Is this portal visible", Int) = 1
 	}
 
 	SubShader{
-		Tags{ "RenderType" = "Opaque" }
+		Tags{ "RenderType"="Transparent" "Queue"="Transparent" "IgnoreProjector"="True" }
 		LOD 100
+
+		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
 		{
@@ -38,7 +41,7 @@ Shader "Custom/PortalShader" {
 			sampler2D _LeftEyeTexture;
 			sampler2D _RightEyeTexture;
 			int _VREnabled;
-
+			int _Visible;
 
 			float offsetX(float input) {
 				return input + cos(input * 200.0f + _Time.w * 2.0f) / 300.0f;
@@ -60,6 +63,10 @@ Shader "Custom/PortalShader" {
 
 			fixed4 frag(v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
 			{
+				if (_Visible == 0) {
+					return fixed4(0.0, 0.0, 0.0, 0.0);
+				}
+
 				float2 sUV = screenPos.xy / _ScreenParams.xy;
 
 				if (unity_CameraProjection[0][2] < 0 || _VREnabled == 0)

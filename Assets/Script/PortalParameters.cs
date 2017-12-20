@@ -9,6 +9,8 @@ public class PortalParameters : MonoBehaviour {
 	public bool EnableVR = false;
 	public Camera Camera;
 	public Camera VRCamera;
+	public GameObject VRCameraRig;
+	public GameObject Player;
 
 	void Awake()
 	{
@@ -18,5 +20,9 @@ public class PortalParameters : MonoBehaviour {
 
 	public Camera getUsedCamera() {
 		return EnableVR ? VRCamera : Camera;
+	}
+
+	public GameObject getPlayerObject() {
+		return EnableVR ? VRCameraRig : Player; 
 	}
 }
