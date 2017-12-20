@@ -5,14 +5,11 @@ using Valve.VR.InteractionSystem;
 
 public class MonsterScript : MonoBehaviour
 {
-
-    public bool isDebug;
-
     [Range(0.01f, 1.0f)]
     public float monsterSpeed = 0.3f;
 
     public float followTime = 3.0f;
-    public float playerDetectionTolerance = 2.0f;
+    public float playerDetectionTolerance = 1.0f;
     private float playerHeadSpeed;
     private float startFollowTime;
 
@@ -22,6 +19,7 @@ public class MonsterScript : MonoBehaviour
 
     public Hand hand1, hand2;
 
+		public bool isDebug;
     public bool isFollowingPlayer = false;
 
 
@@ -76,9 +74,9 @@ public class MonsterScript : MonoBehaviour
             return;
         }
 
-        print("Monster is moving ...");
         transform.LookAt(playerTransform);
-        transform.Translate((playerTransform.position - transform.position) * Time.deltaTime * monsterSpeed);
+
+		transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, monsterSpeed * Time.deltaTime);
     }
 
 
