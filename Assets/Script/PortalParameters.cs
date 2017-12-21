@@ -17,6 +17,14 @@ public class PortalParameters : MonoBehaviour {
 	{
 		if (instance == null)
 			instance = this;
+
+		if (EnableVR) {
+			VRCameraRig.SetActive (true);
+			Player.SetActive (false);
+		} else {
+			VRCameraRig.SetActive (false);
+			Player.SetActive (true);
+		}
 	}
 
 	public Camera getUsedCamera() {

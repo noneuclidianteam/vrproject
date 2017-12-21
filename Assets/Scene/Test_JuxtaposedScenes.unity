@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -217,9 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 377336586}
-  DestinationRoom: {fileID: 260854742}
   DestinationPortal: {fileID: 2123140437}
+  DestinationPortal2: {fileID: 190452997}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!4 &53641307 stripped
 Transform:
@@ -483,9 +483,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 1964507874}
-  DestinationRoom: {fileID: 377336586}
   DestinationPortal: {fileID: 50042256}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!4 &191960823 stripped
 Transform:
@@ -1369,9 +1369,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 716340229}
-  DestinationRoom: {fileID: 443760924}
   DestinationPortal: {fileID: 1865360767}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!1 &527415725 stripped
 GameObject:
@@ -1389,9 +1389,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 2058782559}
-  DestinationRoom: {fileID: 1334608734}
   DestinationPortal: {fileID: 1961982344}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!4 &531406088 stripped
 Transform:
@@ -1815,7 +1815,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1311913117478454, guid: 53631de20e368f345bfd356f64694d5e, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53631de20e368f345bfd356f64694d5e, type: 2}
@@ -2676,9 +2676,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 647584869}
-  DestinationRoom: {fileID: 2058782559}
   DestinationPortal: {fileID: 527415725}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!1 &1494196867
 GameObject:
@@ -2938,9 +2938,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 1408100197}
-  DestinationRoom: {fileID: 327806811}
   DestinationPortal: {fileID: 1771727690}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!1001 &1669655460
 Prefab:
@@ -3082,7 +3082,7 @@ Prefab:
     - target: {fileID: 114260623107528038, guid: 2a0681148dc05e54d8afcacc61c70356,
         type: 2}
       propertyPath: EnableVR
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114260623107528038, guid: 2a0681148dc05e54d8afcacc61c70356,
         type: 2}
@@ -3094,6 +3094,11 @@ Prefab:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1382271744}
+    - target: {fileID: 114260623107528038, guid: 2a0681148dc05e54d8afcacc61c70356,
+        type: 2}
+      propertyPath: PortalBlur
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a0681148dc05e54d8afcacc61c70356, type: 2}
   m_IsPrefabParent: 0
@@ -3113,9 +3118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 327806811}
-  DestinationRoom: {fileID: 1964507874}
   DestinationPortal: {fileID: 190452997}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!1 &1779624792 stripped
 GameObject:
@@ -3143,9 +3148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 443760924}
-  DestinationRoom: {fileID: 647584869}
   DestinationPortal: {fileID: 1483367193}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!4 &1879439494 stripped
 Transform:
@@ -3242,9 +3247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 1334608734}
-  DestinationRoom: {fileID: 1408100197}
   DestinationPortal: {fileID: 1650699956}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20
 --- !u!1 &1964507874
 GameObject:
@@ -3616,7 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2b12eeb0a73bb408b1b10598c5a68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SourceRoom: {fileID: 260854742}
-  DestinationRoom: {fileID: 716340229}
   DestinationPortal: {fileID: 506795197}
+  DestinationPortal2: {fileID: 0}
+  DoubleSided: 0
   CameraPositionHistorySize: 20

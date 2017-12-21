@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Portal2 : MonoBehaviour {
 
-	public GameObject SourceRoom;
-	public GameObject DestinationRoom;
 	public GameObject DestinationPortal;
+	public GameObject DestinationPortal2;
+
+	private GameObject currentPortal;
+
+	public bool DoubleSided = false;
 
 	public int CameraPositionHistorySize = 20;
 
@@ -79,10 +82,10 @@ public class Portal2 : MonoBehaviour {
 		return m; 
 	}
 
-	private Vector3 roomOffset;
+	private Vector3 portalOffset;
 
-	private void computeRoomOffset() {
-		roomOffset = DestinationRoom.transform.position - SourceRoom.transform.position;
+	private void computePortalOffset() {
+		portalOffset = currentPortal.transform.position - transform.position;
 	}
 
 	public void preparePortalRenderStereo() {
@@ -90,7 +93,7 @@ public class Portal2 : MonoBehaviour {
 
 		// left eye
 		Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
-		renderCamera.transform.position = playerCamera.transform.position + roomOffset + playerCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = playerCamera.transform.position + portalOffset + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Left,
@@ -104,7 +107,7 @@ public class Portal2 : MonoBehaviour {
 
 		// right eye
 		eyeOffset = SteamVR.instance.eyes[1].pos;
-		renderCamera.transform.position = playerCamera.transform.position + roomOffset + playerCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = playerCamera.transform.position + portalOffset + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Right,
@@ -128,7 +131,7 @@ public class Portal2 : MonoBehaviour {
 		//print(string.Format("{0} {1}", playerCamera.transform.localPosition, renderCamera.transform.localPosition));
 
 		renderCamera.transform.rotation = playerCamera.transform.rotation;
-		renderCamera.transform.position = playerCamera.transform.position + roomOffset;
+		renderCamera.transform.position = playerCamera.transform.position + portalOffset;
 
 		renderCamera.projectionMatrix = playerCamera.projectionMatrix;
 		renderCamera.targetTexture = _leftEyeRenderTexture;
@@ -139,18 +142,38 @@ public class Portal2 : MonoBehaviour {
 		portalMaterial.SetTexture ("_LeftEyeTexture", _leftEyeRenderTexture);
 	}
 
+	void handleDoubleSided() {
+		if (Vector3.Dot (PortalParameters.instance.getUsedCamera ().transform.forward, transform.parent.forward) > 0) {
+			this.gameObject.transform.parent.Rotate (0f, 180f, 0f);
+			if (DestinationPortal2 != null) {
+				currentPortal = currentPortal == DestinationPortal ? DestinationPortal2 : DestinationPortal;
+			}
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
+		if (DestinationPortal != null) {
+			currentPortal = DestinationPortal;
+		} else {
+			currentPortal = DestinationPortal2;
+		}
+
 		createRenderCamera();
 		createRenderTextures();
 		assignPortalMaterial ();
-		computeRoomOffset ();
 		playerCamera = PortalParameters.instance.getUsedCamera ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		updateCameraDirection();
+
+		if (DoubleSided) {
+			handleDoubleSided();
+		}
+
+		computePortalOffset ();
 	}
 
 	void OnTriggerEnter(Collider collider) {
@@ -163,7 +186,7 @@ public class Portal2 : MonoBehaviour {
 		}
 
 		//TODO : Teleport player here.
-		PortalParameters.instance.getPlayerObject().transform.position += roomOffset;
+		PortalParameters.instance.getPlayerObject().transform.position += portalOffset;
 
 		StartCoroutine (SwitchActivePortal());
 
@@ -173,7 +196,7 @@ public class Portal2 : MonoBehaviour {
 	IEnumerator SwitchActivePortal()
 	{
 		yield return new WaitForSeconds (0.05f);
-		DestinationPortal.SetActive (true);
+		currentPortal.SetActive (true);
 		yield return new WaitForSeconds (0.05f);
 		gameObject.SetActive (false);
 	}
@@ -191,5 +214,10 @@ public class Portal2 : MonoBehaviour {
 		} else {
 			preparePortalRenderStandart ();
 		}
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawLine (gameObject.transform.position, DestinationPortal.transform.position);
 	}
 }
