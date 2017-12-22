@@ -12,6 +12,7 @@ public class PortalParameters : MonoBehaviour {
 	public Camera VRCamera;
 	public GameObject VRCameraRig;
 	public GameObject Player;
+	public int RenderCameraIgnoredLayer = 31;
 
 	void Awake()
 	{

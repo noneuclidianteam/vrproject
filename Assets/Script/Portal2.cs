@@ -14,7 +14,7 @@ public class Portal2 : MonoBehaviour {
 	public int CameraPositionHistorySize = 20;
 
 	private Camera playerCamera;
-	private Camera renderCamera;
+	private static Camera renderCamera;
 
 	private Queue<Vector3> cameraPositions = new Queue<Vector3>();
 	private Vector3 cameraDirection = Vector3.zero;
@@ -33,6 +33,8 @@ public class Portal2 : MonoBehaviour {
 			renderCamera.nearClipPlane = 0.01f;
 			//renderCamera.cullingMask = renderCamera.cullingMask & ~(1 << LayerMask.NameToLayer ("Layer1"));
 			renderCamera.enabled = false;
+			renderCamera.cullingMask =
+				renderCamera.cullingMask & ~(1 << PortalParameters.instance.RenderCameraIgnoredLayer);
 		}
 	}
 
