@@ -13,6 +13,8 @@ public class Portal2 : MonoBehaviour {
 
 	public int CameraPositionHistorySize = 20;
 
+	public int RenderCameraIgnoredLayer = -1;
+
 	private Camera playerCamera;
 	private static Camera renderCamera;
 
@@ -33,8 +35,6 @@ public class Portal2 : MonoBehaviour {
 			renderCamera.nearClipPlane = 0.01f;
 			//renderCamera.cullingMask = renderCamera.cullingMask & ~(1 << LayerMask.NameToLayer ("Layer1"));
 			renderCamera.enabled = false;
-			renderCamera.cullingMask =
-				renderCamera.cullingMask & ~(1 << PortalParameters.instance.RenderCameraIgnoredLayer);
 		}
 	}
 
@@ -161,6 +161,10 @@ public class Portal2 : MonoBehaviour {
 			currentPortal = DestinationPortal2;
 		}
 
+		if (RenderCameraIgnoredLayer == -1) {
+			RenderCameraIgnoredLayer = PortalParameters.instance.RenderCameraIgnoredLayer;
+		}
+
 		createRenderCamera();
 		createRenderTextures();
 		assignPortalMaterial ();
@@ -211,10 +215,18 @@ public class Portal2 : MonoBehaviour {
 
 		portalMaterial.SetInt("_BluredPortal", PortalParameters.instance.PortalBlur ? 1 : 0);
 
+		if (RenderCameraIgnoredLayer != -1) {
+			renderCamera.cullingMask = renderCamera.cullingMask & ~(1 << RenderCameraIgnoredLayer);
+		}
+
 		if (PortalParameters.instance.EnableVR) {
 			preparePortalRenderStereo ();
 		} else {
 			preparePortalRenderStandart ();
+		}
+
+		if (RenderCameraIgnoredLayer != -1) {
+			renderCamera.cullingMask = renderCamera.cullingMask | 1 << RenderCameraIgnoredLayer;
 		}
 	}
 
