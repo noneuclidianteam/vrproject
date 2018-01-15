@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BiggerInsidePortal : MonoBehaviour {
 
-	public Camera MainCamera;
+	private Camera MainCamera;
 	public int SourceLayer, DestinationLayer;
+	public bool isReversed = false;
 
     public GameObject pillar;
     public GameObject pillar_alt;
@@ -25,7 +26,9 @@ public class BiggerInsidePortal : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		renderCamera = (Camera) Camera.Instantiate(
+        MainCamera = Camera.main;
+
+        renderCamera = (Camera) Camera.Instantiate(
 			MainCamera.GetComponent<Camera>(),
 			MainCamera.transform.position,
 			MainCamera.transform.rotation,
@@ -40,8 +43,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 		enableLayer (MainCamera, SourceLayer);
 		disableLayer (MainCamera, DestinationLayer);
 
-		// renderCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-		renderCamera.targetTexture = new RenderTexture(2000, 2000, 24);
+		renderCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 		Material mat = new Material(Shader.Find("Hidden/PortalEffectShader"));
 		GetComponent<Renderer> ().material = mat;
 		mat.mainTexture = renderCamera.targetTexture;
@@ -55,9 +57,6 @@ public class BiggerInsidePortal : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider)
     {
-
-		print("Colliding");
-
 		if (!collider.gameObject.CompareTag (MainCamera.tag)) 
 			return;
 		
@@ -65,7 +64,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 
 		if (crossed)
         {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f) 
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) > 0f && !isReversed) 
 				return;
 			
 			disableLayer (MainCamera, DestinationLayer);
@@ -78,7 +77,7 @@ public class BiggerInsidePortal : MonoBehaviour {
 		}
         else
         {
-			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f) 
+			if (Vector3.Dot (currCamPos - lastCamPos, transform.forward) < 0f && isReversed) 
 				return;		
 
 			disableLayer (MainCamera, SourceLayer);

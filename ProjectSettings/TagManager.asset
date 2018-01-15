@@ -14,11 +14,9 @@ TagManager:
   - 
   - 
   - Layer1
-  - RightOnlyLayer1
-  - LeftOnlyLayer1
   - Layer2
-  - RightOnlyLayer2
-  - LeftOnlyLayer2
+  - Layer3
+  - Layer4
   - 
   - 
   - 
@@ -37,6 +35,8 @@ TagManager:
   - 
   - 
   - 
+  - 
+  - IgnoreRender
   m_SortingLayers:
   - name: Default
     uniqueID: 0
