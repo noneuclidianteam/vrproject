@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 7f1c6a234e580f64abc1abf176b65fc0
-timeCreated: 1512052737
+timeCreated: 1513948408
 licenseType: Free
 SubstanceImporter:
   externalObjects: {}
@@ -11,7 +11,7 @@ SubstanceImporter:
     prototypeName: fabric_027
     shaderName: 
     shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-    shaderKeywords: 
+    shaderKeywords: _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP
     renderQueue: -1
     lightmapFlags: 4
     inputs:
@@ -269,12 +269,12 @@ SubstanceImporter:
     - shaderProp: _MetallicGlossMap
       material: {instanceID: 0}
       baseUID: 790301716
-    - shaderProp: _OcclusionMap
-      material: {instanceID: 0}
-      baseUID: 790301718
     - shaderProp: _ParallaxMap
       material: {instanceID: 0}
       baseUID: 790301800
+    - shaderProp: _OcclusionMap
+      material: {instanceID: 0}
+      baseUID: 790301718
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 
