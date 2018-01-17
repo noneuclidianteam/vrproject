@@ -2886,7 +2886,7 @@ Prefab:
     - target: {fileID: 114260623107528038, guid: 2a0681148dc05e54d8afcacc61c70356,
         type: 2}
       propertyPath: EnableVR
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114260623107528038, guid: 2a0681148dc05e54d8afcacc61c70356,
         type: 2}
