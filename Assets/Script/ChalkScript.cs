@@ -6,8 +6,8 @@ public class ChalkScript : MonoBehaviour {
 
     Vector3 previousPos;
 
-    [Range(0.001f, 0.01f)]
-    public float detectionTolerance;
+    [Range(0.01f, 1.0f)]
+    public float detectionTolerance = 0.05f;
 
     public LineRenderer lr;
 
@@ -28,9 +28,9 @@ public class ChalkScript : MonoBehaviour {
         Vector3 diffPos = transform.position - previousPos;
         if (diffPos.x > detectionTolerance || diffPos.y > detectionTolerance || diffPos.z > detectionTolerance)
         {
-            print("Updating line points.");
-            lr.positionCount++;
-            lr.SetPosition(lr.positionCount - 1, transform.position);
+            //print("Updating line points.");
+            lr.SetPosition(lr.positionCount++, transform.position);
+            previousPos = transform.position;
         }
 
 	}
