@@ -11,6 +11,8 @@ public class ChalkScript : MonoBehaviour {
 
     public LineRenderer lr;
 
+    public bool isDrawing = false;
+
 
 	void Start ()
     {
@@ -26,7 +28,7 @@ public class ChalkScript : MonoBehaviour {
 	void Update () {
 
         Vector3 diffPos = transform.position - previousPos;
-        if (diffPos.x > detectionTolerance || diffPos.y > detectionTolerance || diffPos.z > detectionTolerance)
+        if (isDrawing && (diffPos.x > detectionTolerance || diffPos.y > detectionTolerance || diffPos.z > detectionTolerance))
         {
             //print("Updating line points.");
             lr.SetPosition(lr.positionCount++, transform.position);
@@ -36,9 +38,17 @@ public class ChalkScript : MonoBehaviour {
 	}
 
 
-    void OnTriggerEnter(Collider col)
+    void OnCollisionEnter(Collision col)
     {
-        
+        print("Start drawing");
+        isDrawing = true;
+
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        print("End drawing");
+        isDrawing = false;
     }
 
 }
