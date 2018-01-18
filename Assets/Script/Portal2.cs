@@ -184,17 +184,19 @@ public class Portal2 : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
 		if (!collider.gameObject.CompareTag (playerCamera.tag)) {
+			print("Test1");
 			return;
 		}
 
 		if (Vector3.Dot (cameraDirection, transform.parent.forward) > 0f) {
+			print("Test2");
 			return;
 		}
 
 		//TODO : Teleport player here.
 		PortalParameters.instance.getPlayerObject().transform.position += portalOffset;
 
-		StartCoroutine (SwitchActivePortal());
+		//StartCoroutine (SwitchActivePortal());
 
 		print("Portal passed");
 	}
