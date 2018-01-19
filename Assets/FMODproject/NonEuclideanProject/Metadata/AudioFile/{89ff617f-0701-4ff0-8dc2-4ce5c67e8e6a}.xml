@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{89ff617f-0701-4ff0-8dc2-4ce5c67e8e6a}">
+        <property name="assetPath">
+            <value>Son impact craie.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.89444444444444449</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{155c7190-e56f-4499-aaa5-3481908299a5}</destination>
+        </relationship>
+    </object>
+</objects>

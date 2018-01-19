@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{5c2c9ba2-ce47-483f-b10e-5e8791a38253}">
+        <property name="assetPath">
+            <value>Bowed Vibe 03.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>4.9486167800453513</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{155c7190-e56f-4499-aaa5-3481908299a5}</destination>
+        </relationship>
+    </object>
+</objects>
