@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour {
 
-	public Portal DestinationPortal;
+	public Portal DestinationPortal = null;
 
 	public int CameraPositionHistorySize = 20;
 
@@ -142,6 +142,10 @@ public class Portal : MonoBehaviour {
 	}
 
 	public void preparePortalRender(int depth, Vector3 origin) {
+		if (DestinationPortal == null) {
+			return;
+		}
+
 		Vector3 portalOffset = 
 			DestinationPortal.gameObject.transform.position - transform.position;
 
@@ -180,6 +184,12 @@ public class Portal : MonoBehaviour {
 		createRenderTextures();
 		assignPortalMaterial();
 		playerCamera = PortalManager.instance.getUsedCamera ();
+
+		if (DestinationPortal != null) {
+			if (DestinationPortal.DestinationPortal == null) {
+					DestinationPortal.DestinationPortal = this;
+			}
+		}
 	}
 	
 	// Update is called once per frame
@@ -188,6 +198,10 @@ public class Portal : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider collider) {
+		if (DestinationPortal == null) {
+			return;
+		}
+
 		if (!collider.gameObject.CompareTag (playerCamera.tag)) {
 			return;
 		}
@@ -203,12 +217,16 @@ public class Portal : MonoBehaviour {
 
 
 	public void OnWillRenderObject() {
-		//Si nous somme dans une passe de pré-rendu, on ne fait rien.
+		if (DestinationPortal == null) {
+			return;
+		}
+
+		//Si nous sommes dans une passe de pre-rendu, on ne fait rien.
 		//Si la camera courante n'est pas la camera du joueur (la camera de rendu).
 		if (Camera.current != playerCamera) {
 			return;
 		} else {
-			//Si nous somme dans une passe de rendu final, et que ce portail
+			//Si nous sommes dans une passe de rendu final, et que ce portail
 			//n'est pas dans la salle ou se trouve le joueur, on ne fait rien.
 			if (getRoom() != PortalManager.instance.CurrentRoom) {
 				return;
@@ -228,6 +246,7 @@ public class Portal : MonoBehaviour {
 
 	void OnDrawGizmos() {
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawLine (gameObject.transform.position, DestinationPortal.transform.position);
+		if(DestinationPortal != null)
+			Gizmos.DrawLine (gameObject.transform.position, DestinationPortal.transform.position);
 	}
 }
