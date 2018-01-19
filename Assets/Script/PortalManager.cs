@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PortalParameters : MonoBehaviour {
+public class PortalManager : MonoBehaviour {
 
-	public static PortalParameters instance = null;
+	public static PortalManager instance = null;
 
 	public bool EnableVR = false;
 	public bool PortalBlur = false;
@@ -13,6 +13,9 @@ public class PortalParameters : MonoBehaviour {
 	public GameObject VRCameraRig;
 	public GameObject Player;
 	public int RenderCameraIgnoredLayer = 31;
+	public Room CurrentRoom;
+
+	private List<Room> rooms;
 
 	void Awake()
 	{
@@ -26,6 +29,16 @@ public class PortalParameters : MonoBehaviour {
 			VRCameraRig.SetActive (false);
 			Player.SetActive (true);
 		}
+	}
+
+	public void Start() {
+		rooms = new List<Room>(FindObjectsOfType<Room> ());
+	}
+
+	IEnumerator enablePortalDelayed(Portal portal)
+	{
+		yield return new WaitForSeconds (0.05f);
+		portal.gameObject.SetActive (true);
 	}
 
 	public Camera getUsedCamera() {

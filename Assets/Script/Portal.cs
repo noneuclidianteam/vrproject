@@ -1,108 +1,75 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 
 public class Portal : MonoBehaviour {
 
-	public int SourceLayer, DestinationLayer;
-	public int cameraPositionHistorySize = 20;
+	public Portal DestinationPortal;
 
-	private bool crossed = false;
-	private static Camera renderCamera = null;
-	private Vector3 lastCamPos;
+	public int CameraPositionHistorySize = 20;
 
-	private RenderTexture _leftEyeRenderTexture;
-	private RenderTexture _rightEyeRenderTexture;
+	public int RenderCameraIgnoredLayer = -1;
 
-	private Material mat;
-
-	private Camera MainCamera;
+	private Camera playerCamera;
+	private static Camera renderCamera;
 
 	private Queue<Vector3> cameraPositions = new Queue<Vector3>();
 	private Vector3 cameraDirection = Vector3.zero;
 
-	private void enableLayer(Camera cam, int layer) {
-		cam.cullingMask = cam.cullingMask | 1 << layer;
+	private Material portalMaterial;
+
+	private RenderTexture _leftEyeRenderTexture;
+	private RenderTexture _rightEyeRenderTexture;
+
+	public Texture2D displacementMap;
+
+	private Room room;
+
+	public Room getRoom() {
+		return this.room;
 	}
 
-	private void disableLayer(Camera cam, int layer) {
-		cam.cullingMask = cam.cullingMask & ~(1 << layer);
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
-	// Use this for initialization
-	void Start () {
+	private void createRenderCamera() {
 		if (renderCamera == null) {
 			GameObject cameraGameObject = new GameObject ();
 			renderCamera = (Camera)cameraGameObject.AddComponent<Camera> ();
 			renderCamera.tag = "Untagged";
+			renderCamera.name = "RenderCamera";
 			renderCamera.useOcclusionCulling = true;
+			renderCamera.nearClipPlane = 0.01f;
+			//renderCamera.cullingMask = renderCamera.cullingMask & ~(1 << LayerMask.NameToLayer ("Layer1"));
+			renderCamera.enabled = false;
 		}
+	}
 
-		MainCamera = PortalParameters.instance.getUsedCamera();
-
-		enableLayer (renderCamera, DestinationLayer);
-		disableLayer (renderCamera, SourceLayer);
-
-		enableLayer (MainCamera, SourceLayer);
-		disableLayer (MainCamera, DestinationLayer);
-
-		if (PortalParameters.instance.EnableVR) {
+	private void createRenderTextures() {
+		if (PortalManager.instance.EnableVR) {
 			_leftEyeRenderTexture = new RenderTexture ((int)SteamVR.instance.sceneWidth, (int)SteamVR.instance.sceneWidth, 24);
 			_rightEyeRenderTexture = new RenderTexture ((int)SteamVR.instance.sceneWidth, (int)SteamVR.instance.sceneWidth, 24);
 		} else {
 			_leftEyeRenderTexture = new RenderTexture (Screen.currentResolution.width, Screen.currentResolution.height, 24);
+			//_leftEyeRenderTexture = new RenderTexture (256, 256, 24);
 		}
-
-		mat = new Material(Shader.Find("Custom/PortalShader"));
-		GetComponent<Renderer> ().material = mat;
 	}
 
-	// Update is called once per frame
-	void Update () {
-		cameraPositions.Enqueue(MainCamera.transform.position);
-		cameraDirection += MainCamera.transform.position;
+	private void assignPortalMaterial() {
+		portalMaterial = new Material(Shader.Find("Custom/PortalShader"));
+		GetComponent<Renderer> ().material = portalMaterial;
+	}
 
-		if (cameraPositions.Count >= cameraPositionHistorySize) {
+	private void updateCameraDirection() {
+		cameraPositions.Enqueue(playerCamera.transform.position);
+		cameraDirection += playerCamera.transform.position;
+
+		if (cameraPositions.Count >= CameraPositionHistorySize) {
 			cameraDirection -= cameraPositions.Dequeue();
 		}
 
 		cameraDirection.Normalize();
-	}
-
-	void OnTriggerEnter(Collider collider) {
-
-		if (!collider.gameObject.CompareTag (MainCamera.tag)) {
-			return;
-		}
-
-		if (Vector3.Dot (cameraDirection, transform.parent.forward) > 0f) {
-			return;
-		}
-
-		if (crossed) {
-			disableLayer (MainCamera, DestinationLayer);
-			enableLayer (MainCamera, SourceLayer);
-
-			disableLayer (renderCamera, SourceLayer);
-			enableLayer (renderCamera, DestinationLayer);
-
-			this.gameObject.layer = SourceLayer;
-		} else {
-			disableLayer (MainCamera, SourceLayer);
-			enableLayer (MainCamera, DestinationLayer);
-
-			disableLayer (renderCamera, DestinationLayer);
-			enableLayer (renderCamera, SourceLayer);
-
-			this.gameObject.layer = DestinationLayer;
-		}
-
-		this.gameObject.transform.parent.Rotate (0f, 180f, 0f);
-
-		crossed = !crossed;
-
-		print("Portal passed");
 	}
 
 	private Matrix4x4 HMDMatrix4x4ToMatrix4x4(Valve.VR.HmdMatrix44_t input) {
@@ -126,61 +93,141 @@ public class Portal : MonoBehaviour {
 		return m; 
 	}
 
-	public void preparePortalRenderStereo() {
-		renderCamera.transform.localRotation = MainCamera.transform.localRotation;
+	public void renderPortalTextureStereo(Vector3 renderCameraPosition) {
+		renderCamera.transform.rotation = playerCamera.transform.rotation;
 
 		// left eye
 		Vector3 eyeOffset = SteamVR.instance.eyes[0].pos;
-		renderCamera.transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = renderCameraPosition + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Left,
-				MainCamera.nearClipPlane,
-				MainCamera.farClipPlane
+				playerCamera.nearClipPlane,
+				playerCamera.farClipPlane
 			)
 		);
 		renderCamera.targetTexture = _leftEyeRenderTexture;
 		renderCamera.Render();
-		mat.SetTexture("_LeftEyeTexture", _leftEyeRenderTexture);
+		portalMaterial.SetTexture("_LeftEyeTexture", _leftEyeRenderTexture);
 
 		// right eye
 		eyeOffset = SteamVR.instance.eyes[1].pos;
-		renderCamera.transform.localPosition = MainCamera.transform.position + MainCamera.transform.TransformVector(eyeOffset);
+		renderCamera.transform.position = renderCameraPosition + playerCamera.transform.TransformVector(eyeOffset);
 		renderCamera.projectionMatrix = HMDMatrix4x4ToMatrix4x4(
 			SteamVR.instance.hmd.GetProjectionMatrix(
 				Valve.VR.EVREye.Eye_Right,
-				MainCamera.nearClipPlane,
-				MainCamera.farClipPlane
+				playerCamera.nearClipPlane,
+				playerCamera.farClipPlane
 			)
 		);
 		renderCamera.targetTexture = _rightEyeRenderTexture;
-		mat.SetInt ("_VREnabled", 1);
+
 		renderCamera.Render();
 
-		mat.SetTexture("_RightEyeTexture", _rightEyeRenderTexture);
+		portalMaterial.SetInt ("_VREnabled", 1);
+		portalMaterial.SetTexture("_RightEyeTexture", _rightEyeRenderTexture);
 	}
 
-	public void preparePortalRenderStandart() {
-		renderCamera.transform.localRotation = MainCamera.transform.rotation;
-		renderCamera.transform.localPosition = MainCamera.transform.position;
-		renderCamera.projectionMatrix = MainCamera.projectionMatrix;
+	private void renderPortalTexture(Vector3 renderCameraPosition) {
+		renderCamera.transform.rotation = playerCamera.transform.rotation;
+		renderCamera.transform.position = renderCameraPosition;
+
+		renderCamera.projectionMatrix = playerCamera.projectionMatrix;
 		renderCamera.targetTexture = _leftEyeRenderTexture;
-		mat.SetInt ("_VREnabled", 0);
+		portalMaterial.SetInt ("_VREnabled", 0);
+
 		renderCamera.Render();
 
-		mat.SetTexture ("_LeftEyeTexture", _leftEyeRenderTexture);
+		portalMaterial.SetTexture ("_LeftEyeTexture", _leftEyeRenderTexture);
 	}
 
-	public void OnWillRenderObject() {
-		if (Camera.current != MainCamera) {
+	public void preparePortalRender(int depth, Vector3 origin) {
+		Vector3 portalOffset = 
+			DestinationPortal.gameObject.transform.position - transform.position;
+
+		Vector3 newOrigin = origin + portalOffset;
+
+		if (depth != 0) {
+
+			foreach (Portal portal in DestinationPortal.getRoom().getPortals()) {
+				if (portal != DestinationPortal)
+					portal.preparePortalRender(depth - 1, newOrigin);
+			}
+		}
+
+		if (RenderCameraIgnoredLayer != -1) {
+			renderCamera.cullingMask = renderCamera.cullingMask & ~(1 << RenderCameraIgnoredLayer);
+		}
+
+		if (PortalManager.instance.EnableVR) {
+			renderPortalTextureStereo(newOrigin);
+		} else {
+			renderPortalTexture(newOrigin);
+		}
+
+		if (RenderCameraIgnoredLayer != -1) {
+			renderCamera.cullingMask = renderCamera.cullingMask | 1 << RenderCameraIgnoredLayer;
+		}
+	}
+
+	// Use this for initialization
+	void Awake () {
+		if (RenderCameraIgnoredLayer == -1) {
+			RenderCameraIgnoredLayer = PortalManager.instance.RenderCameraIgnoredLayer;
+		}
+
+		createRenderCamera();
+		createRenderTextures();
+		assignPortalMaterial();
+		playerCamera = PortalManager.instance.getUsedCamera ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		updateCameraDirection();
+	}
+
+	void OnTriggerEnter(Collider collider) {
+		if (!collider.gameObject.CompareTag (playerCamera.tag)) {
 			return;
 		}
 
-		if (PortalParameters.instance.EnableVR) {
-			preparePortalRenderStereo ();
-		} else {
-			preparePortalRenderStandart ();
+		if (Vector3.Dot (cameraDirection, transform.parent.forward) > 0f) {
+			return;
 		}
+
+		PortalManager.instance.getPlayerObject().transform.position += 
+			DestinationPortal.transform.position - transform.position;
+		PortalManager.instance.CurrentRoom = DestinationPortal.getRoom();
 	}
-		
+
+
+	public void OnWillRenderObject() {
+		//Si nous somme dans une passe de pré-rendu, on ne fait rien.
+		//Si la camera courante n'est pas la camera du joueur (la camera de rendu).
+		if (Camera.current != playerCamera) {
+			return;
+		} else {
+			//Si nous somme dans une passe de rendu final, et que ce portail
+			//n'est pas dans la salle ou se trouve le joueur, on ne fait rien.
+			if (getRoom() != PortalManager.instance.CurrentRoom) {
+				return;
+			}
+		}
+
+		preparePortalRender(1, playerCamera.transform.position);
+	}
+
+	public void disableRender() {
+		GetComponent<Renderer>().enabled = false;
+	}
+
+	public void enableRender() {
+		GetComponent<Renderer> ().enabled = true;
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawLine (gameObject.transform.position, DestinationPortal.transform.position);
+	}
 }
