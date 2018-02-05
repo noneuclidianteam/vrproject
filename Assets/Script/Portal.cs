@@ -13,7 +13,7 @@ public class Portal : MonoBehaviour {
 	private Camera playerCamera;
 	private static Camera renderCamera;
 
-	private Queue<Vector3> cameraPositions = new Queue<Vector3>();
+	private Queue<Vector3> cameraDirections = new Queue<Vector3>();
 	private Vector3 cameraDirection = Vector3.zero;
 
 	private Material portalMaterial;
@@ -22,6 +22,8 @@ public class Portal : MonoBehaviour {
 	private RenderTexture _rightEyeRenderTexture;
 
 	public Texture2D displacementMap;
+
+	private Vector3 lastCameraPosition;
 
 	private Room room;
 
@@ -62,14 +64,28 @@ public class Portal : MonoBehaviour {
 	}
 
 	private void updateCameraDirection() {
-		cameraPositions.Enqueue(playerCamera.transform.position);
-		cameraDirection += playerCamera.transform.position;
+		if (lastCameraPosition == null) {
+			return;
+		}
 
-		if (cameraPositions.Count >= CameraPositionHistorySize) {
-			cameraDirection -= cameraPositions.Dequeue();
+		Vector3 currentCameraPosition = playerCamera.transform.position;
+		Vector3 currentCameraDirection = lastCameraPosition - currentCameraPosition;
+
+		cameraDirections.Enqueue(currentCameraDirection);
+
+		if (cameraDirections.Count >= CameraPositionHistorySize) {
+			cameraDirections.Dequeue();
+		}
+
+		cameraDirection = Vector3.zero;
+
+		foreach (Vector3 vec in cameraDirections) {
+			cameraDirection += vec;
 		}
 
 		cameraDirection.Normalize();
+
+		lastCameraPosition = currentCameraPosition;
 	}
 
 	private Matrix4x4 HMDMatrix4x4ToMatrix4x4(Valve.VR.HmdMatrix44_t input) {
@@ -206,9 +222,15 @@ public class Portal : MonoBehaviour {
 			return;
 		}
 
-		if (Vector3.Dot (cameraDirection, transform.parent.forward) > 0f) {
+		float dotProduct = Vector3.Dot (cameraDirection, transform.parent.forward);
+
+		Debug.Log ("Dot product : " + dotProduct);
+
+		if (dotProduct > 0f) {
 			return;
 		}
+
+		Debug.Log ("Portal passed");
 
 		PortalManager.instance.getPlayerObject().transform.position += 
 			DestinationPortal.transform.position - transform.position;
