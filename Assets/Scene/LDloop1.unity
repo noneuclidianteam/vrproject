@@ -20800,6 +20800,11 @@ Prefab:
       propertyPath: CurrentRoom
       value: 
       objectReference: {fileID: 590785393}
+    - target: {fileID: 114587136446369110, guid: 2a0681148dc05e54d8afcacc61c70356,
+        type: 2}
+      propertyPath: CameraPositionHistorySize
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a0681148dc05e54d8afcacc61c70356, type: 2}
   m_IsPrefabParent: 0
@@ -66427,6 +66432,11 @@ Prefab:
       propertyPath: DestinationPortal
       value: 
       objectReference: {fileID: 1592537435}
+    - target: {fileID: 114608807991789864, guid: 951bc3993797c51439a4a8a72e6a9526,
+        type: 2}
+      propertyPath: CameraPositionHistorySize
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114590049361091506, guid: 951bc3993797c51439a4a8a72e6a9526, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 951bc3993797c51439a4a8a72e6a9526, type: 2}

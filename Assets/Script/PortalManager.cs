@@ -14,6 +14,7 @@ public class PortalManager : MonoBehaviour {
 	public GameObject Player;
 	public int RenderCameraIgnoredLayer = 31;
 	public Room CurrentRoom;
+	public int CameraPositionHistorySize = 20;
 
 	private List<Room> rooms;
 

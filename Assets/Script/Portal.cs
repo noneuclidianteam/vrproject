@@ -6,8 +6,6 @@ public class Portal : MonoBehaviour {
 
 	public Portal DestinationPortal = null;
 
-	public int CameraPositionHistorySize = 20;
-
 	public int RenderCameraIgnoredLayer = -1;
 
 	private Camera playerCamera;
@@ -25,7 +23,11 @@ public class Portal : MonoBehaviour {
 
 	private Vector3 lastCameraPosition;
 
+	private static int cameraPositionHistorySize = 0;
+
 	private Room room;
+
+	private static float lastCross = 0f;
 
 	public Room getRoom() {
 		return this.room;
@@ -69,11 +71,11 @@ public class Portal : MonoBehaviour {
 		}
 
 		Vector3 currentCameraPosition = playerCamera.transform.position;
-		Vector3 currentCameraDirection = lastCameraPosition - currentCameraPosition;
+		Vector3 currentCameraDirection = currentCameraPosition - lastCameraPosition;
 
 		cameraDirections.Enqueue(currentCameraDirection);
 
-		if (cameraDirections.Count >= CameraPositionHistorySize) {
+		if (cameraDirections.Count >= cameraPositionHistorySize) {
 			cameraDirections.Dequeue();
 		}
 
@@ -192,6 +194,10 @@ public class Portal : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		if (cameraPositionHistorySize != PortalManager.instance.CameraPositionHistorySize) {
+			cameraPositionHistorySize = PortalManager.instance.CameraPositionHistorySize;
+		}
+
 		if (RenderCameraIgnoredLayer == -1) {
 			RenderCameraIgnoredLayer = PortalManager.instance.RenderCameraIgnoredLayer;
 		}
@@ -222,6 +228,12 @@ public class Portal : MonoBehaviour {
 			return;
 		}
 
+		float now = Time.time;
+
+		if (now - lastCross < 0.1f) {
+			return;
+		}
+
 		float dotProduct = Vector3.Dot (cameraDirection, transform.parent.forward);
 
 		Debug.Log ("Dot product : " + dotProduct);
@@ -231,6 +243,8 @@ public class Portal : MonoBehaviour {
 		}
 
 		Debug.Log ("Portal passed");
+
+		lastCross = now;
 
 		PortalManager.instance.getPlayerObject().transform.position += 
 			DestinationPortal.transform.position - transform.position;
@@ -267,8 +281,25 @@ public class Portal : MonoBehaviour {
 	}
 
 	void OnDrawGizmos() {
-		Gizmos.color = Color.cyan;
-		if(DestinationPortal != null)
+		
+		if(DestinationPortal != null) {
+			Gizmos.color = Color.cyan;
 			Gizmos.DrawLine (gameObject.transform.position, DestinationPortal.transform.position);
+		}
+
+		if (cameraDirection != null && playerCamera != null) {
+			Gizmos.color = Color.magenta;
+			Gizmos.DrawLine(playerCamera.transform.position, playerCamera.transform.position + cameraDirection);
+		}
+
+		Gizmos.color = Color.green;
+		Vector3 forward_2 = transform.parent.forward / 2.0f;
+		Vector3 forward_4 = forward_2 / 2.0f;
+		Vector3 perpendicular = new Vector3(-forward_4.z, forward_4.y, forward_4.x) / 2.0f;
+		Vector3 endArrow = transform.position + forward_2;
+		Gizmos.DrawLine(transform.position, endArrow);
+		Gizmos.DrawLine(endArrow, endArrow - forward_4 + perpendicular);
+		Gizmos.DrawLine(endArrow, endArrow - forward_4 - perpendicular);
+		Gizmos.DrawLine(transform.position - perpendicular, transform.position + perpendicular);
 	}
 }
