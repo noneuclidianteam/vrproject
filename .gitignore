@@ -6,6 +6,9 @@
 /UnityPackageManager
 /Assets/AssetStoreTools*
 /Assets/SteamVR*
+/Assets/FMODproject/NonEuclideanProject/.cache*
+/Assets/FMODproject/NonEuclideanProject/Build*
+/Assets/StreamingAssets*
 
 # Visual Studio 2015 cache directory
 /.vs/

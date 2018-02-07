@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -13,10 +14,6 @@ TagManager:
   - UI
   - 
   - 
-  - Layer1
-  - Layer2
-  - Layer3
-  - Layer4
   - 
   - 
   - 
@@ -36,7 +33,11 @@ TagManager:
   - 
   - 
   - 
-  - IgnoreRender
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
