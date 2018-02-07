@@ -6,8 +6,6 @@ public class Portal : MonoBehaviour {
 
 	public Portal DestinationPortal = null;
 
-	public ColorfulFog componentTarget;
-
 	public int RenderCameraIgnoredLayer = -1;
 
 	private Camera playerCamera;
@@ -51,19 +49,6 @@ public class Portal : MonoBehaviour {
 		return copy as T;
 	}
 
-	Component CopyComponent(Component original, GameObject destination)
-	{
-		System.Type type = original.GetType();
-		Component copy = destination.AddComponent(type);
-		// Copied fields can be restricted with BindingFlags
-		System.Reflection.FieldInfo[] fields = type.GetFields(); 
-		foreach (System.Reflection.FieldInfo field in fields)
-		{
-			field.SetValue(copy, field.GetValue(original));
-		}
-		return copy;
-	}
-
 	private void createRenderCamera() {
 		if (renderCamera == null) {
 			GameObject cameraGameObject = new GameObject ();
@@ -81,7 +66,7 @@ public class Portal : MonoBehaviour {
 			ColorfulFog fogComponent = playerCamera.GetComponent<ColorfulFog>();
 
 			if (fogComponent != null) {
-				ColorfulFog renderFogComponent = CopyComponent(componentTarget, cameraGameObject);
+				ColorfulFog renderFogComponent = CopyComponent(fogComponent, cameraGameObject);
 				renderFogComponent.fogDensity = fogComponent.fogDensity / 3.0f;
 				renderFogComponent.height = 3.16f;
 				renderFogComponent.heightDensity = 2.89f;
