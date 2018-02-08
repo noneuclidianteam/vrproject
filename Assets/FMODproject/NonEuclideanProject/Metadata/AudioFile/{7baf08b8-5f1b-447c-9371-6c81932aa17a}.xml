@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{7baf08b8-5f1b-447c-9371-6c81932aa17a}">
+        <property name="assetPath">
+            <value>Sifflement.WAV</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>30.948666666666668</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{155c7190-e56f-4499-aaa5-3481908299a5}</destination>
+        </relationship>
+    </object>
+</objects>

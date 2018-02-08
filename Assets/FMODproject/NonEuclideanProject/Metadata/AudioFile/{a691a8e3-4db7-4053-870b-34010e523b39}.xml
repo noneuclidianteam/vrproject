@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{a691a8e3-4db7-4053-870b-34010e523b39}">
+        <property name="assetPath">
+            <value>ChocAimants.WAV</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>25.544666666666668</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{155c7190-e56f-4499-aaa5-3481908299a5}</destination>
+        </relationship>
+    </object>
+</objects>

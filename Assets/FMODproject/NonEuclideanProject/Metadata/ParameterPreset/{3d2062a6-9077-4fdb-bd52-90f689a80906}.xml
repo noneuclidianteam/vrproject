@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{3d2062a6-9077-4fdb-bd52-90f689a80906}">
+        <property name="name">
+            <value>stopRepeting</value>
+        </property>
+        <relationship name="folder">
+            <destination>{abc486d0-6ab3-45dc-9f9f-a62f44b481a2}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{8428a70e-2b18-4621-9c14-ade7972fa6a9}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{8428a70e-2b18-4621-9c14-ade7972fa6a9}">
+        <property name="initialValue">
+            <value>0</value>
+        </property>
+        <property name="seekSpeed">
+            <value>0.80000007152557373</value>
+        </property>
+    </object>
+</objects>
