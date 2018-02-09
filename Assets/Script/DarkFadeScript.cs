@@ -35,8 +35,8 @@ public class DarkFadeScript : MonoBehaviour {
     {        
         currentRoomName = GetComponent<PortalManager>().CurrentRoom.name;
 
-        // Cas de la Safe Zone
-        if(currentRoomName.Equals("RoomTuto"))
+        // Cas de la Safe Zone (ou de la salle tuto)
+        if(currentRoomName.Equals("RoomTuto") || currentRoomName.Equals("Room1"))
         {
             if (exposure > startExposure)
                 return;
