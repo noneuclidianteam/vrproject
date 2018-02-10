@@ -28,7 +28,7 @@ public class Chalk : MonoBehaviour {
 		Vector3 lineCastEnd = transform.position + size;
 
 		if (Physics.Linecast(lineCastStart, lineCastEnd, out hit)) {
-			emitter.transform.position = hit.point;
+			emitter.transform.position = hit.point - transform.forward * 0.01f;
 			emitter.Play();
 		} else {
 			emitter.Pause();
