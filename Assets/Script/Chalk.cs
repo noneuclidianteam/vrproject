@@ -5,36 +5,41 @@ using UnityEngine;
 public class Chalk : MonoBehaviour {
 
 	[SerializeField]
-	ParticleSystem emitter;
+	private ParticleSystem emitter;
 
 	[SerializeField]
-	private int wait = 3;
+	[Range(0.001f, 0.3f)]
+	private float lineCastSize = 1.0f;
 
-	private int waitCount;
+	private Vector3 lineCastStart;
+	private Vector3 lineCastEnd;
 
 	public void Awake()
 	{
-		//GetComponent<MeshRenderer>().material.color = brush.Color;
 		emitter.Pause();
 	}
 
-	public void FixedUpdate()
+	public void Update()
 	{
-		++waitCount;
-		emitter.Pause();
-	}
+		RaycastHit hit;
 
-	public void OnCollisionStay(Collision collision)
-	{
-		if(waitCount < wait)
-			return;
-		waitCount = 0;
+		Vector3 size = transform.forward * lineCastSize;
+		Vector3 lineCastStart = transform.position - size;
+		Vector3 lineCastEnd = transform.position + size;
 
-		foreach(var p in collision.contacts)
-		{
-			emitter.transform.position = p.point;
-			emitter.Play ();
-			//Debug.Log ("Test1");
+		if (Physics.Linecast(lineCastStart, lineCastEnd, out hit)) {
+			emitter.transform.position = hit.point;
+			emitter.Play();
+		} else {
+			emitter.Pause();
 		}
+	}
+
+	public void OnDrawGizmos() {
+		Vector3 size = transform.forward * lineCastSize;
+		Vector3 lineCastStart = transform.position - size;
+		Vector3 lineCastEnd = transform.position + size;
+		Gizmos.color = Color.red;
+		Gizmos.DrawLine (lineCastStart, lineCastEnd);
 	}
 }
