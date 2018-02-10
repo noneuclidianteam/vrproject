@@ -37,8 +37,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4133548303059004}
   - component: {fileID: 54407040754455170}
-  - component: {fileID: 135529838299010314}
   - component: {fileID: 114774868918779568}
+  - component: {fileID: 136517640939553710}
   m_Layer: 0
   m_Name: Chalk
   m_TagString: Untagged
@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1290854761989924}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.022, z: 1.4990001}
+  m_LocalPosition: {x: 0, y: -0.022000045, z: 1.4990001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4422056397126568}
@@ -173,8 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emitter: {fileID: 198070080705682790}
   wait: 0
---- !u!135 &135529838299010314
-SphereCollider:
+--- !u!136 &136517640939553710
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -182,9 +182,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.02
-  m_Center: {x: 0.002, y: 0.002, z: 0.06}
+  m_Radius: 0.0081980005
+  m_Height: 0.16405667
+  m_Direction: 2
+  m_Center: {x: 0.000718467, y: 0.0028739125, z: -0.016198935}
 --- !u!198 &198070080705682790
 ParticleSystem:
   m_ObjectHideFlags: 1
