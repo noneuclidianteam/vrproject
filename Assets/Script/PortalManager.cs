@@ -15,8 +15,9 @@ public class PortalManager : MonoBehaviour {
 	public int RenderCameraIgnoredLayer = 31;
 	public Room CurrentRoom;
 	public int CameraPositionHistorySize = 20;
+    public bool textureDrawing = false;
 
-	private List<Room> rooms;
+    private List<Room> rooms;
 
 	void Awake()
 	{
@@ -36,7 +37,14 @@ public class PortalManager : MonoBehaviour {
 		rooms = new List<Room>(FindObjectsOfType<Room> ());
 	}
 
-	IEnumerator enablePortalDelayed(Portal portal)
+    public void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.D)) {
+            textureDrawing = !textureDrawing;
+        }
+    }
+
+    IEnumerator enablePortalDelayed(Portal portal)
 	{
 		yield return new WaitForSeconds (0.05f);
 		portal.gameObject.SetActive (true);

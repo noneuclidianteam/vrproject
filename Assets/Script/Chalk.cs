@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Es.InkPainter;
 
 public class Chalk : MonoBehaviour {
 
-	[SerializeField]
+    [SerializeField]
+    private Brush brush = null;
+
+    [SerializeField]
 	private ParticleSystem emitter;
 
 	[SerializeField]
@@ -28,13 +32,24 @@ public class Chalk : MonoBehaviour {
 		Vector3 lineCastEnd = transform.position + size;
 
 		if (Physics.Linecast(lineCastStart, lineCastEnd, out hit)) {
-            if (hit.collider.gameObject.tag == "Portal")
+
+            if (PortalManager.instance.textureDrawing)
             {
+                InkCanvas canvasObject = hit.collider.gameObject.GetComponent<InkCanvas>();
+                if (canvasObject != null && brush != null)
+                {
+                    canvasObject.Paint(brush, hit.point);
+                }
+            } else
+            {
+                if (hit.collider.gameObject.tag == "Portal")
+                {
+                    return;
+                }
+                emitter.transform.position = hit.point - transform.forward * 0.01f;
+                emitter.Play();
                 return;
             }
-			emitter.transform.position = hit.point - transform.forward * 0.01f;
-			emitter.Play();
-            return;
 		}
         emitter.Pause();
     }
