@@ -237,6 +237,8 @@ public class Portal : MonoBehaviour {
 					DestinationPortal.DestinationPortal = this;
 			}
 		}
+
+        gameObject.tag = "Portal";
 	}
 	
 	// Update is called once per frame

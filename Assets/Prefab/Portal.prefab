@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114608807991789864}
   m_Layer: 8
   m_Name: Portal_plane1
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 1819115617389322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85683966, y: 1.2494469, z: 1}
   m_Children:
   - {fileID: 4658538132077616}
   m_Father: {fileID: 0}
@@ -80,14 +80,14 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1357599504242622}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1c6d68865d93a8442bc51cb69f5e505d, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,6 +153,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestinationPortal: {fileID: 0}
-  CameraPositionHistorySize: 20
-  RenderCameraIgnoredLayer: -1
+  RenderCameraIgnoredLayer: 31
   displacementMap: {fileID: 0}

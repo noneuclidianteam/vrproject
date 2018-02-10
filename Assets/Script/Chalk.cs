@@ -28,12 +28,16 @@ public class Chalk : MonoBehaviour {
 		Vector3 lineCastEnd = transform.position + size;
 
 		if (Physics.Linecast(lineCastStart, lineCastEnd, out hit)) {
+            if (hit.collider.gameObject.tag == "Portal")
+            {
+                return;
+            }
 			emitter.transform.position = hit.point - transform.forward * 0.01f;
 			emitter.Play();
-		} else {
-			emitter.Pause();
+            return;
 		}
-	}
+        emitter.Pause();
+    }
 
 	public void OnDrawGizmos() {
 		Vector3 size = transform.forward * lineCastSize;
